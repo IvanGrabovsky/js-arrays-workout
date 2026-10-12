@@ -176,18 +176,105 @@
       justify-content: space-between;
       align-items: center;
     }
-    .module-select {
+    /* Custom Module Dropdown (Pirsch Style) */
+    .custom-select-wrapper {
+      position: relative;
+      margin-bottom: 16px;
+      user-select: none;
+    }
+    .custom-select-trigger {
       width: 100%;
-      padding: 12px 14px;
-      border-radius: 14px;
+      padding: 12px 16px;
+      border-radius: 16px;
       border: var(--border-hairline);
-      background: #fff;
+      background: #ffffff;
       font-family: var(--font-sans);
       font-size: 14px;
-      font-weight: 500;
-      margin-bottom: 16px;
-      outline: none;
+      font-weight: 600;
+      color: var(--color-ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .custom-select-trigger:hover {
+      background: var(--card-alt);
+    }
+    .custom-select-trigger.active {
+      background: #fff;
+      box-shadow: 0 0 0 2px #000;
+    }
+    .chevron-icon {
+      transition: transform 0.2s ease;
+      stroke: var(--color-ink);
+      flex-shrink: 0;
+    }
+    .custom-select-trigger.active .chevron-icon {
+      transform: rotate(180deg);
+    }
+    .custom-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: var(--border-hairline);
+      border-radius: 18px;
+      padding: 8px;
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      max-height: 380px;
+      overflow-y: auto;
+      z-index: 100;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+    .custom-dropdown-menu.open {
+      display: flex;
+      animation: dropdown-fade-in 0.15s ease-out;
+    }
+    @keyframes dropdown-fade-in {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .dropdown-option {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      background: transparent;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--color-ink);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.12s ease;
+      text-align: left;
+      gap: 8px;
+    }
+    .dropdown-option:hover {
+      background: var(--card-alt);
+    }
+    .dropdown-option.selected {
+      background: var(--color-sunshine-highlight);
+      border-color: #000;
+      font-weight: 700;
+    }
+    .dropdown-option-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      background: rgba(0, 0, 0, 0.06);
+      color: var(--color-graphite);
+      white-space: nowrap;
+    }
+    .dropdown-option.selected .dropdown-option-badge {
+      background: rgba(0, 0, 0, 0.15);
+      color: var(--color-ink);
     }
     .tasks-list {
       display: flex;
@@ -464,11 +551,41 @@
       padding: 36px;
       line-height: 1.7;
     }
-    .readme-view h2 { font-size: 26px; margin-bottom: 16px; border-bottom: var(--border-hairline); padding-bottom: 8px; }
-    .readme-view h3 { font-size: 18px; margin: 20px 0 10px 0; }
-    .readme-view p, .readme-view ul, .readme-view ol { margin-bottom: 16px; font-size: 15px; }
-    .readme-view code { background: var(--card-alt); padding: 3px 6px; border-radius: 6px; font-family: var(--font-mono); font-size: 13px; }
-    .readme-view pre { background: var(--editor-bg); color: #fff; padding: 18px; border-radius: 14px; overflow-x: auto; margin-bottom: 20px; font-family: var(--font-mono); font-size: 13px; }
+    .readme-view h2 { font-size: 26px; margin-bottom: 16px; border-bottom: var(--border-hairline); padding-bottom: 8px; color: var(--color-ink); }
+    .readme-view h3 { font-size: 18px; margin: 24px 0 10px 0; color: var(--color-ink); font-weight: 700; }
+    .readme-view p, .readme-view ul, .readme-view ol { margin-bottom: 16px; font-size: 15px; color: var(--color-ink); }
+    .readme-view :not(pre) > code {
+      background: var(--card-alt);
+      color: var(--color-ink);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      padding: 3px 7px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .readme-view pre {
+      background: #11151f !important;
+      color: #f1f5f9 !important;
+      border: var(--border-hairline);
+      padding: 20px;
+      border-radius: 16px;
+      overflow-x: auto;
+      margin: 14px 0 24px 0;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .readme-view pre code {
+      background: transparent !important;
+      color: #38bdf8 !important;
+      padding: 0 !important;
+      border: none !important;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      display: block;
+      white-space: pre;
+    }
 
     /* Mass Runner Tab */
     .mass-runner-view {
@@ -527,9 +644,17 @@
       <!-- Left Sidebar: Modules & Tasks -->
       <aside class="sidebar-panel">
         <h3>Каталог завдань</h3>
-        <select id="moduleSelect" class="module-select" onchange="onModuleChange(this.value)">
-          <!-- Generated dynamically -->
-        </select>
+        <div class="custom-select-wrapper" id="customModuleWrapper">
+          <button type="button" class="custom-select-trigger" id="customSelectTrigger" onclick="toggleModuleDropdown()">
+            <span id="selectedModuleLabel">Модуль 1: forEach</span>
+            <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="custom-dropdown-menu" id="customDropdownMenu">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
         <div id="tasksList" class="tasks-list">
           <!-- Generated dynamically -->
         </div>
@@ -620,7 +745,7 @@
       <p>На сторінці репозиторію натисніть кнопку <b>Fork</b> угорі праворуч, щоб створити власну копію у своєму GitHub-акаунті.</p>
 
       <h3>2. Склонуйте ваш форк та встановіть залежності</h3>
-      <pre><code>git clone https://github.com/ВАШ_НІК/js-arrays-workout.git
+      <pre><code>git clone https://github.com/IvanGrabovsky/js-arrays-workout.git
 cd js-arrays-workout
 npm install</code></pre>
 
@@ -664,18 +789,57 @@ git push origin solution/ivan-ivanov</code></pre>
       document.getElementById('tabWorkflow').classList.toggle('active', tabName === 'workflow');
     };
 
-    // Initialize Select & Tasks
-    function initUI() {
-      const select = document.getElementById('moduleSelect');
-      select.innerHTML = '';
+    // Custom Dropdown Controls
+    window.toggleModuleDropdown = function() {
+      const trigger = document.getElementById('customSelectTrigger');
+      const menu = document.getElementById('customDropdownMenu');
+      const isOpen = menu.classList.contains('open');
+      if (isOpen) {
+        menu.classList.remove('open');
+        trigger.classList.remove('active');
+      } else {
+        menu.classList.add('open');
+        trigger.classList.add('active');
+      }
+    };
+
+    document.addEventListener('click', (e) => {
+      const wrapper = document.getElementById('customModuleWrapper');
+      if (wrapper && !wrapper.contains(e.target)) {
+        document.getElementById('customDropdownMenu')?.classList.remove('open');
+        document.getElementById('customSelectTrigger')?.classList.remove('active');
+      }
+    });
+
+    function renderModuleDropdown() {
+      const menu = document.getElementById('customDropdownMenu');
+      if (!menu) return;
+      menu.innerHTML = '';
       modulesCatalog.forEach((m) => {
-        const opt = document.createElement('option');
-        opt.value = m.id;
-        opt.textContent = m.title;
-        select.appendChild(opt);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `dropdown-option ${m.id === currentModuleId ? 'selected' : ''}`;
+        btn.innerHTML = `
+          <span><b>${m.id.toString().padStart(2, '0')}.</b> ${m.title.replace(/^Модуль \d+: /, '')}</span>
+          <span class="dropdown-option-badge">${m.tasks.length} зад.</span>
+        `;
+        btn.onclick = () => {
+          onModuleChange(m.id);
+          document.getElementById('customDropdownMenu').classList.remove('open');
+          document.getElementById('customSelectTrigger').classList.remove('active');
+        };
+        menu.appendChild(btn);
       });
 
-      select.value = currentModuleId;
+      const currentMod = modulesCatalog.find(m => m.id === currentModuleId);
+      if (currentMod) {
+        document.getElementById('selectedModuleLabel').textContent = currentMod.title;
+      }
+    }
+
+    // Initialize UI & Tasks
+    function initUI() {
+      renderModuleDropdown();
       renderTasksList();
       loadTask(currentTaskId);
     }
@@ -686,6 +850,7 @@ git push origin solution/ivan-ivanov</code></pre>
       if (mod && mod.tasks.length > 0) {
         currentTaskId = mod.tasks[0].id;
       }
+      renderModuleDropdown();
       renderTasksList();
       loadTask(currentTaskId);
     };

@@ -50,7 +50,7 @@
 
 ### Крок 2. Клонуйте свій форк
 ```bash
-git clone https://github.com/ВАШ_НІКНЕЙМ/js-arrays-workout.git
+git clone https://github.com/IvanGrabovsky/js-arrays-workout.git
 cd js-arrays-workout
 ```
 
