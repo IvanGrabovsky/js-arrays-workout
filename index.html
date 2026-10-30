@@ -18,54 +18,61 @@
     :root {
       /* Refero / Pirsch Design System Tokens */
       --color-cream-paper: #f8f5ed;
-      --color-ink: #000000;
-      --color-graphite: #707070;
-      --color-sunshine-highlight: #ffda6e;
-      --color-mint-signal: #10b981;
-      --color-error: #ef4444;
-      --card-bg: #f8f5ed;
-      --card-alt: #f1ede1;
-      --editor-bg: #14171f;
-      --terminal-bg: #191c24;
-      --terminal-text: #f4efea;
-      --border-hairline: 1px solid #000000;
-      --border-subtle: 1px solid rgba(0, 0, 0, 0.15);
+      --color-ink-black: #111216;
+      --color-graphite: #6e7687;
+      --color-border-subtle: #000000;
+      --color-sunshine-highlight: #ffdc33;
+      --color-accent-blue: #0447ff;
+      --color-emerald-active: #049755;
+      
+      --card-bg: #fffbf0;
+      --card-alt: #f3ece0;
+      --radius-card: 16px;
+      --radius-subcard: 8px;
+      --radius-pill: 9999px;
       
       --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      
-      --radius-card: 20px;
-      --radius-subcard: 14px;
-      --radius-pill: 9999px;
-      --radius-sm: 8px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       background-color: var(--color-cream-paper);
-      color: var(--color-ink);
+      color: var(--color-ink-black);
       font-family: var(--font-sans);
-      line-height: 1.5;
-      padding: 24px 20px 80px 20px;
-      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      padding: 24px;
     }
 
     .container {
-      max-width: 1320px;
+      max-width: 1440px;
       margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
     /* Header */
     header {
+      background: #ffffff;
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: 16px 24px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      box-shadow: 2px 2px 0px #000000;
       flex-wrap: wrap;
       gap: 16px;
-      margin-bottom: 24px;
-      padding-bottom: 20px;
-      border-bottom: var(--border-hairline);
     }
 
     .brand {
@@ -79,37 +86,34 @@
     }
 
     .brand-title {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 700;
       letter-spacing: -0.02em;
     }
 
     .brand-tag {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
       background: var(--color-sunshine-highlight);
       border: 1px solid #000000;
-      padding: 3px 10px;
+      padding: 2px 10px;
       border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 700;
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
-    /* Pill Badges and Buttons */
     .pill-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      background: var(--card-bg);
+      border: 1px solid #000000;
       padding: 6px 14px;
-      background: #ffffff;
-      border: 1px solid rgba(0, 0, 0, 0.2);
       border-radius: var(--radius-pill);
       font-size: 13px;
       font-weight: 600;
@@ -122,100 +126,87 @@
       padding: 8px 18px;
       border-radius: var(--radius-pill);
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.15s ease;
-      text-decoration: none;
       font-family: inherit;
     }
 
     .btn-pill-primary {
-      background: var(--color-ink);
-      color: #ffffff;
-      border: 1px solid var(--color-ink);
+      background: var(--color-sunshine-highlight);
+      color: #000000;
+      border: 1px solid #000000;
       box-shadow: 2px 2px 0px #000000;
     }
 
     .btn-pill-primary:hover {
-      background: #222222;
       transform: translate(-1px, -1px);
       box-shadow: 3px 3px 0px #000000;
     }
 
+    .btn-pill-primary:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0px #000000;
+    }
+
     .btn-pill-outline {
       background: #ffffff;
-      color: var(--color-ink);
+      color: #000000;
       border: 1px solid #000000;
       box-shadow: 2px 2px 0px #000000;
     }
 
     .btn-pill-outline:hover {
-      background: var(--color-sunshine-highlight);
-      transform: translate(-1px, -1px);
-      box-shadow: 3px 3px 0px #000000;
+      background: var(--card-alt);
     }
 
-    /* Navigation Tabs */
+    /* Tabs Bar */
     .tabs-bar {
       display: flex;
       gap: 8px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-      background: var(--card-alt);
-      padding: 6px;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(0, 0, 0, 0.2);
-      width: fit-content;
+      border-bottom: 2px solid #000000;
+      padding-bottom: 8px;
+      overflow-x: auto;
     }
 
     .tab-btn {
-      padding: 8px 20px;
+      background: #ffffff;
+      border: 1px solid #000000;
       border-radius: var(--radius-pill);
-      font-size: 13px;
-      font-weight: 600;
-      border: none;
-      background: transparent;
-      color: var(--color-graphite);
+      padding: 8px 20px;
+      font-size: 14px;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.15s ease;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-family: inherit;
+      transition: all 0.15s;
+      white-space: nowrap;
+      color: #000000;
     }
 
     .tab-btn.active {
-      background: #ffffff;
-      color: var(--color-ink);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      border: 1px solid rgba(0, 0, 0, 0.15);
+      background: #000000;
+      color: #ffffff;
+      box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
     }
 
-    /* Custom Module Selector Dropdown */
+    /* Module Selector Dropdown */
     .module-selector-wrap {
       position: relative;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
     }
 
     .dropdown-trigger {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       width: 100%;
-      padding: 14px 20px;
       background: #ffffff;
       border: 1px solid #000000;
       border-radius: var(--radius-card);
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--color-ink);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       cursor: pointer;
+      font-weight: 700;
+      font-size: 15px;
       box-shadow: 2px 2px 0px #000000;
-      transition: all 0.15s ease;
-    }
-
-    .dropdown-trigger:hover {
-      background: var(--color-sunshine-highlight);
     }
 
     .dropdown-menu {
@@ -226,12 +217,11 @@
       background: #ffffff;
       border: 1px solid #000000;
       border-radius: var(--radius-card);
-      box-shadow: 4px 8px 24px rgba(0, 0, 0, 0.12);
-      padding: 8px;
-      z-index: 100;
-      display: none;
-      max-height: 480px;
+      max-height: 400px;
       overflow-y: auto;
+      z-index: 100;
+      box-shadow: 4px 4px 0px #000000;
+      display: none;
     }
 
     .dropdown-menu.open {
@@ -239,18 +229,17 @@
     }
 
     .dropdown-item {
+      padding: 12px 20px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 12px 16px;
-      border-radius: var(--radius-subcard);
+      justify-content: space-between;
       cursor: pointer;
-      transition: background 0.1s ease;
-      gap: 12px;
+      border-bottom: 1px solid #f3ece0;
+      transition: background 0.1s;
     }
 
     .dropdown-item:hover {
-      background: var(--card-alt);
+      background: var(--card-bg);
     }
 
     .dropdown-item.active {
@@ -263,15 +252,16 @@
       display: flex;
       gap: 6px;
       overflow-x: auto;
-      padding-bottom: 14px;
-      margin-bottom: 18px;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      scrollbar-width: thin;
     }
 
-    /* Trainer Grid Layout */
+    /* Trainer Layout Split */
     .trainer-grid {
       display: grid;
       grid-template-columns: 460px 1fr;
-      gap: 24px;
+      gap: 20px;
       align-items: start;
     }
 
@@ -281,52 +271,52 @@
       }
     }
 
-    /* Left Card: Task Details */
+    /* Task Description Card */
     .task-card {
       background: #ffffff;
       border: 1px solid #000000;
       border-radius: var(--radius-card);
       padding: 24px;
+      box-shadow: 3px 3px 0px #000000;
       display: flex;
       flex-direction: column;
       gap: 18px;
-      box-shadow: 3px 3px 0px #000000;
     }
 
     .task-number {
       font-family: var(--font-mono);
       font-size: 13px;
       font-weight: 700;
-      color: #000000;
-      background: var(--color-sunshine-highlight);
-      border: 1px solid #000000;
-      padding: 3px 10px;
-      border-radius: var(--radius-pill);
+      color: var(--color-accent-blue);
+      background: rgba(4, 71, 255, 0.08);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(4, 71, 255, 0.2);
     }
 
     .task-title {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.3;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
     }
 
     .task-badge-level {
       font-size: 11px;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 3px 8px;
       border-radius: var(--radius-pill);
+      border: 1px solid #000000;
       background: var(--card-alt);
-      border: 1px solid rgba(0, 0, 0, 0.2);
     }
 
     .section-title {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 0.06em;
       text-transform: uppercase;
+      letter-spacing: 0.05em;
       color: var(--color-graphite);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .task-goal {
@@ -339,15 +329,14 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
     .req-list li {
-      position: relative;
-      padding-left: 20px;
       font-size: 13.5px;
-      color: #333333;
       line-height: 1.5;
+      padding-left: 20px;
+      position: relative;
     }
 
     .req-list li::before {
@@ -378,76 +367,143 @@
       color: #b91c1c;
     }
 
-    .task-navigation {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding-top: 12px;
-      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    .hint-method-card {
+      background: #f8faff;
+      border-left: 3px solid var(--color-accent-blue);
+      padding: 10px 12px;
+      border-radius: 4px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #334155;
+      border: 1px solid rgba(4, 71, 255, 0.12);
+      border-left-width: 3px;
     }
 
-    /* Right Card: Code Editor */
-    .editor-card {
+    .hint-method-card b {
+      color: var(--color-ink-black);
+    }
+
+    /* Teacher Guide Box */
+    .teacher-guide-box {
       background: #ffffff;
-      border: 1px solid #000000;
-      border-radius: var(--radius-card);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 3px 3px 0px #000000;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: var(--radius-subcard);
+      padding: 16px;
+      margin-top: 14px;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.08);
+      animation: fadeIn 0.2s ease-out;
     }
 
-    .editor-topbar {
+    .teacher-guide-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 18px;
-      background: var(--card-alt);
-      border-bottom: 1px solid #000000;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+
+    .teacher-guide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #047857;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .teacher-guide-content {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #374151;
+      margin-bottom: 12px;
+    }
+
+    .teacher-guide-content p {
+      margin-bottom: 8px;
+    }
+
+    .teacher-guide-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .task-navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid #f3ece0;
+    }
+
+    /* Code Editor Card */
+    .editor-card {
+      background: #18191f;
+      border: 1px solid #000000;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: 3px 3px 0px #000000;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .editor-topbar {
+      background: #111216;
+      border-bottom: 1px solid #282a36;
+      padding: 10px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       flex-wrap: wrap;
       gap: 10px;
     }
 
     .editor-filename {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #f3f4f6;
       display: flex;
       align-items: center;
       gap: 8px;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 600;
     }
 
     .editor-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .format-btn {
-      background: #ffffff;
-      border: 1px solid #000000;
-      border-radius: var(--radius-pill);
-      padding: 6px 14px;
+      background: #252836;
+      color: #e5e7eb;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      padding: 4px 12px;
       font-size: 12px;
-      font-weight: 700;
+      font-family: inherit;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 1px 1px 0px #000000;
-      transition: all 0.15s ease;
+      transition: all 0.15s;
     }
 
     .format-btn:hover {
-      background: var(--color-sunshine-highlight);
+      background: #374151;
+      color: #ffffff;
     }
 
     .save-notice {
-      font-size: 12px;
-      color: var(--color-mint-signal);
-      font-weight: 700;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: #10b981;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.2s;
     }
 
     .save-notice.visible {
@@ -456,81 +512,84 @@
 
     .editor-textarea {
       width: 100%;
-      min-height: 280px;
-      background: var(--editor-bg);
-      color: #e6edf3;
+      height: 380px;
+      background: #18191f;
+      color: #f8f8f2;
       font-family: var(--font-mono);
       font-size: 14px;
       line-height: 1.6;
-      padding: 18px;
+      padding: 16px 20px;
       border: none;
-      resize: vertical;
       outline: none;
+      resize: vertical;
+      white-space: pre;
+      overflow-wrap: normal;
+      overflow-x: auto;
       tab-size: 2;
     }
 
     .editor-bottombar {
+      background: #111216;
+      border-top: 1px solid #282a36;
+      padding: 12px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 18px;
-      background: #ffffff;
-      border-top: 1px solid #000000;
       flex-wrap: wrap;
       gap: 12px;
     }
 
     .shortcut-hints {
-      font-size: 12px;
-      color: var(--color-graphite);
       display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+      color: #9ba1b0;
     }
 
     .shortcut-hints kbd {
-      background: var(--card-alt);
-      border: 1px solid rgba(0, 0, 0, 0.2);
+      background: #232733;
+      border: 1px solid #3b4252;
       border-radius: 4px;
       padding: 2px 6px;
+      color: #eceff4;
       font-family: var(--font-mono);
-      font-size: 11px;
-      color: #000000;
     }
 
-    /* Test Results Console */
+    /* Console Test Results */
     .console-card {
-      margin-top: 18px;
-      background: var(--terminal-bg);
-      color: var(--terminal-text);
-      border-radius: var(--radius-card);
-      overflow: hidden;
+      background: #111216;
       border: 1px solid #000000;
+      border-radius: var(--radius-card);
+      margin-top: 16px;
+      overflow: hidden;
       box-shadow: 3px 3px 0px #000000;
     }
 
     .console-header {
+      background: #191c24;
+      padding: 10px 18px;
+      border-bottom: 1px solid #282a36;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #9ba1b0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 18px;
-      background: #12141a;
-      border-bottom: 1px solid #2a2e3a;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: #9ba1b0;
     }
 
     .console-body {
-      padding: 16px 18px;
+      padding: 16px 20px;
       font-family: var(--font-mono);
       font-size: 13px;
       line-height: 1.6;
-      min-height: 90px;
-      max-height: 280px;
+      max-height: 260px;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     .test-result-row {
@@ -544,8 +603,8 @@
     .test-status-pill {
       font-size: 11px;
       font-weight: 700;
-      padding: 2px 8px;
-      border-radius: var(--radius-pill);
+      padding: 2px 6px;
+      border-radius: 4px;
       text-transform: uppercase;
     }
 
@@ -581,7 +640,12 @@
     .theory-subtitle {
       font-size: 18px;
       font-weight: 700;
-      margin: 24px 0 12px 0;
+      margin: 28px 0 12px 0;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--card-alt);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .theory-p {
@@ -593,7 +657,7 @@
 
     .theory-grid-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 16px;
       margin: 20px 0;
     }
@@ -613,6 +677,50 @@
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    .theory-code-block {
+      background: #18191f;
+      color: #f8f8f2;
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      line-height: 1.6;
+      padding: 16px 20px;
+      border-radius: var(--radius-subcard);
+      margin: 14px 0 18px 0;
+      overflow-x: auto;
+      border: 1px solid #2d3139;
+    }
+
+    .theory-diagram {
+      background: #f1f5f9;
+      border: 1px dashed #64748b;
+      border-radius: var(--radius-subcard);
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.5;
+      color: #0f172a;
+      margin: 14px 0 18px 0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .theory-callout {
+      background: #eff6ff;
+      border-left: 4px solid var(--color-accent-blue);
+      padding: 14px 18px;
+      border-radius: 0 var(--radius-subcard) var(--radius-subcard) 0;
+      margin: 16px 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #1e3a8a;
+    }
+
+    .theory-callout-warning {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      color: #92400e;
     }
 
     /* Mass Runner Tab */
@@ -654,6 +762,66 @@
       border: 1px solid #2a2e3a;
     }
 
+    /* Teacher Modal & Auth styling */
+    .teacher-active {
+      background: rgba(34, 197, 94, 0.2) !important;
+      color: #047857 !important;
+      border-color: #10b981 !important;
+      font-weight: 700 !important;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      animation: fadeIn 0.15s ease-out;
+    }
+
+    .modal-card {
+      background: #18191f;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-card, 16px);
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      color: #f3f4f6;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      color: #9ba1b0;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .modal-close:hover {
+      color: #ffffff;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
     /* Toast Notification */
     .toast-box {
       position: fixed;
@@ -678,112 +846,9 @@
       opacity: 1;
     }
 
-    /* Teacher Modal & Auth styling */
-    .teacher-active {
-      background: rgba(34, 197, 94, 0.2) !important;
-      color: #4ade80 !important;
-      border-color: rgba(74, 222, 128, 0.4) !important;
-      font-weight: 600 !important;
-    }
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      animation: fadeIn 0.15s ease-out;
-    }
-    .modal-card {
-      background: #18191f;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: var(--radius-card, 16px);
-      width: 100%;
-      max-width: 440px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      color: #f3f4f6;
-    }
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .modal-close {
-      background: none;
-      border: none;
-      font-size: 20px;
-      line-height: 1;
-      cursor: pointer;
-      color: #9ba1b0;
-      padding: 4px;
-      border-radius: 4px;
-    }
-    .modal-close:hover {
-      color: #ffffff;
-    }
-    .modal-body {
-      padding: 20px;
-    }
-
-    /* Teacher Modal & Auth styling */
-    .teacher-active {
-      background: rgba(34, 197, 94, 0.2) !important;
-      color: #4ade80 !important;
-      border-color: rgba(74, 222, 128, 0.4) !important;
-      font-weight: 600 !important;
-    }
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      animation: fadeIn 0.15s ease-out;
-    }
-    .modal-card {
-      background: #18191f;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: var(--radius-card, 16px);
-      width: 100%;
-      max-width: 440px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      color: #f3f4f6;
-    }
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .modal-close {
-      background: none;
-      border: none;
-      font-size: 20px;
-      line-height: 1;
-      cursor: pointer;
-      color: #9ba1b0;
-      padding: 4px;
-      border-radius: 4px;
-    }
-    .modal-close:hover {
-      color: #ffffff;
-    }
-    .modal-body {
-      padding: 20px;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
@@ -792,7 +857,7 @@
     <!-- Header -->
     <header>
       <div class="brand">
-        <span class="brand-icon">🦆</span>
+        <span class="brand-icon">📦</span>
         <h1 class="brand-title">JS Arrays Workout</h1>
         <span class="brand-tag">94 Завдання</span>
       </div>
@@ -807,6 +872,10 @@
           🏆 <span id="progressCount">0</span> / 94 виконано
         </div>
 
+        <button class="btn-pill btn-pill-outline" id="teacherAuthBtn" title="Вхід для викладача (Ctrl + Shift + A)">
+          🔐 Викладач
+        </button>
+
         <button class="btn-pill btn-pill-outline" id="resetAllBtn" title="Скинути весь збережений код">
           ↺ Скинути
         </button>
@@ -816,7 +885,7 @@
     <!-- Navigation Tabs -->
     <div class="tabs-bar">
       <button class="tab-btn active" data-tab="trainer">⚡ Тренажер (94 завдання)</button>
-      <button class="tab-btn" data-tab="theory">📖 Повна теорія (Модуль 5: Масиви)</button>
+      <button class="tab-btn" data-tab="theory">📖 Повна теорія (Масиви в JS)</button>
       <button class="tab-btn" data-tab="mass-runner">🧪 Масовий запуск (Mass Runner)</button>
       <button class="tab-btn" data-tab="final-cert">🚀 Підсумковий тест</button>
     </div>
@@ -872,6 +941,20 @@
             <div id="taskHintContent">Використайте синтаксис [a, b, c]...</div>
           </div>
 
+          <!-- Teacher Guide Box (visible only when Teacher Vault unlocked) -->
+          <div class="teacher-guide-box" id="teacherGuideBox" style="display:none;">
+            <div class="teacher-guide-header">
+              <span class="teacher-guide-badge">🎓 Пояснення рішення для ментора</span>
+              <button class="btn-pill btn-pill-outline" id="copyTeacherExplBtn" style="padding:3px 10px; font-size:11px;">📋 Скопіювати пояснення</button>
+            </div>
+            <div class="teacher-guide-content" id="teacherGuideContent">
+              <!-- Populated by JS -->
+            </div>
+            <div class="teacher-guide-actions">
+              <button class="btn-pill btn-pill-primary" id="pasteTeacherSolutionBtn" style="padding:6px 14px; font-size:12px;">💡 Підставити рішення в редактор</button>
+            </div>
+          </div>
+
           <div class="task-navigation">
             <button class="btn-pill btn-pill-outline" id="prevTaskBtn">← Попереднє</button>
             <button class="btn-pill btn-pill-primary" id="nextTaskBtn">Наступне →</button>
@@ -904,7 +987,7 @@
               <div class="shortcut-hints">
                 <span><kbd>Ctrl</kbd> + <kbd>Enter</kbd> Запустити тест</span>
                 <span><kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd> Форматувати</span>
-                <span><kbd>Tab</kbd> Відступ 2 пробіли</span>
+                <span><kbd>Tab</kbd> 2 пробіли</span>
               </div>
 
               <div style="display:flex; gap:8px;">
@@ -931,61 +1014,362 @@
     <!-- TAB 2: FULL THEORY -->
     <div id="tab-theory" class="tab-content" style="display:none;">
       <div class="theory-section">
-        <h2 class="theory-title">Модуль 5: Масиви в JavaScript — Повний конспект</h2>
+        <h2 class="theory-title">Масиви в JavaScript — Повний теоретичний посібник</h2>
         <p class="theory-p">
-          <b>Масив (Array)</b> — це впорядкована колекція даних, де кожен елемент має свій числовий порядковий номер (<b>індекс</b>), який починається з <b>0</b>. Масиви в JavaScript є динамічними за розміром і можуть зберігати елементи будь-яких типів.
+          Масив (<b>Array</b>) — це одна з фундаментальних і найчастіше використовуваних структур даних у мові JavaScript. У цьому конспекті вичерпно розібрано внутрішній устрій масивів у пам'яті, причину нумерації з 0, роботу з посиланнями, усі базові та сучасні методи, багатовимірні матриці та типові практичні задачі.
         </p>
 
+        <!-- 1. Що таке масив? -->
+        <h3 class="theory-subtitle">1. Що таке масив?</h3>
+        <p class="theory-p">
+          <b>Масив (Array)</b> — це впорядкована колекція даних, де кожен елемент має свій числовий порядковий номер, який називається <b>індексом</b>. Індексація в JavaScript завжди починається з <b>0</b>.
+        </p>
+        <p class="theory-p">
+          На відміну від багатьох статично типізованих мов (C, Java), масиви в JavaScript є:
+        </p>
         <div class="theory-grid-cards">
           <div class="theory-card">
-            <h3 class="theory-card-title">🧠 Організація в памʼяті та адресація</h3>
+            <div class="theory-card-title">📈 Динамічними за розміром</div>
+            <p style="font-size:13.5px; line-height:1.6; color:#444;">Вам не потрібно заздалегідь декларувати розмір масиву. Ви можете вільно додавати та видаляти елементи під час виконання програми, і пам'ять підлаштується автоматично.</p>
+          </div>
+          <div class="theory-card">
+            <div class="theory-card-title">🧩 Гетерогенними за типами</div>
+            <p style="font-size:13.5px; line-height:1.6; color:#444;">Один і той самий масив може одночасно зберігати числа, рядки, булеві значення, об'єкти, інші масиви і навіть функції: <code>[42, "привіт", true, { id: 1 }]</code>.</p>
+          </div>
+          <div class="theory-card">
+            <div class="theory-card-title">📦 Об'єктами за природою</div>
+            <p style="font-size:13.5px; line-height:1.6; color:#444;">Технічно в JS масив — це спеціалізований підтип об'єкта (<code>typeof [] === 'object'</code>), чиї ключі є числами (рядковими індексами), з автоматично керованою властивістю <code>length</code>.</p>
+          </div>
+        </div>
+
+        <!-- 2. Цілі та завдання масивів -->
+        <h3 class="theory-subtitle">2. Цілі та завдання масивів</h3>
+        <p class="theory-p">
+          Масиви створюються для розв'язання таких ключових завдань програмування:
+        </p>
+        <ul class="req-list" style="margin-bottom: 16px;">
+          <li><b>Зберігання однорідних наборів сутностей:</b> список товарів у кошику інтернет-магазину, черга сповіщень користувача, перелік оцінок учнів, координати пікселів на екрані.</li>
+          <li><b>Масова пакетна обробка даних:</b> швидкий перебір усіх елементів за допомогою циклів, фільтрація за складними критеріями, сортування та трансформування даних.</li>
+          <li><b>Реалізація класичних структур даних:</b> моделювання <i>Стека</i> (LIFO), <i>Черги</i> (FIFO), <i>Дека</i> та <i>Двовимірних матриць</i>.</li>
+        </ul>
+
+        <!-- 3. Відмінність масивів від звичайних змінних -->
+        <h3 class="theory-subtitle">3. Відмінність масивів від звичайних змінних</h3>
+        <p class="theory-p">
+          Звичайна змінна зберігає лише <b>одне скалярне значення</b> (число, рядок тощо). Якщо вам потрібно зберегти 100 показників температури, використання звичайних змінних <code>temp1, temp2, ..., temp100</code> паралізує програму — їх неможливо автоматично перебрати в циклі чи передати як єдиний аргумент у функцію.
+        </p>
+        <p class="theory-p">
+          Масив дає змогу пов'язати тисячі значень із єдиною змінною: <code>const temperatures = [18.5, 19.2, 21.0, 17.8];</code>.
+        </p>
+        <div class="theory-callout">
+          <b>Важливо: Примітиви копіюються за значенням, а масиви — за посиланням!</b>
+          <br>
+          Коли ви присвоюєте масив іншій змінній (<code>const b = a;</code>), копіюються не самі дані, а лише <b>посилання (адреса в пам'яті)</b>. Зміна елемента через змінну <code>b</code> негайно відобразиться у змінній <code>a</code>.
+        </div>
+        <div class="theory-code-block">
+// Копіювання за посиланням (Reference):
+const original = [1, 2, 3];
+const alias = original; // alias вказує на той самий блок пам'яті!
+
+alias.push(4);
+console.log(original); // [1, 2, 3, 4] — оригінал теж змінився!
+
+// Справжнє незалежне поверхневе копіювання:
+const independentCopy = [...original]; // або original.slice()
+independentCopy.push(99);
+console.log(original); // [1, 2, 3, 4] — оригінал незмінний!</div>
+
+        <!-- 4. Як влаштовані масиви в памʼяті -->
+        <h3 class="theory-subtitle">4. Як влаштовані масиви в памʼяті. Індекси. Нумерація з 0</h3>
+        <p class="theory-p">
+          У комп'ютерній пам'яті масив спочатку задумувався як <b>неперервний послідовний блок комірок пам'яті</b>. Змінна в стеку зберігає початкову адресу (<b>BaseAddress</b>) першого елемента в купі (Heap).
+        </p>
+        <div class="theory-diagram">
+Стек (Stack):
+  variable "languages" ──&gt; вказує на адресу 0x1000 у Купі (Heap)
+
+Купа (Heap) — неперервний блок пам'яті:
+┌─────────────────┬─────────────────┬─────────────────┬─────────────────┐
+│ Адреса: 0x1000  │ Адреса: 0x1008  │ Адреса: 0x1010  │ Адреса: 0x1018  │
+│ Індекс:   0     │ Індекс:   1     │ Індекс:   2     │ Індекс:   3     │
+│ Дані:   "JS"    │ Дані:   "HTML"  │ Дані:   "CSS"   │ Дані:   "React" │
+│ Зсув:   +0 байт │ Зсув:   +8 байт │ Зсув:   +16 байт│ Зсув:   +24 байт│
+└─────────────────┴─────────────────┴─────────────────┴─────────────────┘</div>
+
+        <p class="theory-p">
+          <b>Чому індексація починається саме з 0?</b>
+          <br>
+          Індекс — це не просто порядковий номер, це <b>фізичне зміщення (offset)</b> від базової адреси початку масиву. Адреса будь-якого елемента обчислюється процесором за формулою:
+          <br>
+          <code>Адреса_елемента(i) = Базова_адреса + (i * Розмір_елемента)</code>
+        </p>
+        <p class="theory-p">
+          Для першого елемента зміщення дорівнює нулю: <code>0 * Розмір_елемента = 0</code>. Перший елемент розташований прямо за базовою адресою! Якби індексація починалася з 1, комп'ютеру доводилося б щоразу виконувати зайву арифметичну операцію віднімання <code>(i - 1)</code> для кожного звернення до пам'яті. Завдяки цій формулі доступ до будь-якого елемента за індексом відбувається миттєво — за <b>O(1)</b> (константний час).
+        </p>
+
+        <!-- 5. Створення масивів -->
+        <h3 class="theory-subtitle">5. Створення масивів ([] та конструктор Array())</h3>
+        <p class="theory-p">
+          У JavaScript існує кілька способів ініціалізації нового масиву:
+        </p>
+        <div class="theory-code-block">
+// 1. Літерал масиву [] (Найбільш рекомендований, швидкий та зручний спосіб):
+const fruits = ['яблуко', 'банан', 'ківі'];
+const empty = [];
+
+// 2. Конструктор new Array():
+const colors = new Array('червоний', 'синій'); // ['червоний', 'синій']
+
+// ⚠️ ПАСТКА конструктора Array(n) з одним числовим аргументом:
+const badArr = new Array(3); // Створює [empty × 3] — масив з 3 "дірками" без значень!
+console.log(badArr.length);  // 3
+console.log(badArr[0]);       // undefined (порожня комірка)
+
+// Правильне заповнення через .fill():
+const zeros = new Array(3).fill(0); // [0, 0, 0]
+
+// 3. Array.of() — позбавлений підступної поведінки new Array:
+const singleNum = Array.of(3); // [3] (масив з одним елементом 3)
+
+// 4. Array.from() — генерація послідовностей:
+const range = Array.from({ length: 5 }, (_, i) => i + 1); // [1, 2, 3, 4, 5]
+
+// 5. Перевірка на масив:
+console.log(Array.isArray(fruits)); // true
+console.log(typeof fruits);         // "object" (ніколи не використовуйте typeof для перевірки масивів!)</div>
+
+        <!-- 6. Доступ до елементів масиву -->
+        <h3 class="theory-subtitle">6. Доступ до елементів масиву</h3>
+        <p class="theory-p">
+          Звернення до комірок здійснюється за числовим індексом у квадратних дужках.
+        </p>
+        <div class="theory-code-block">
+const stack = ['HTML', 'CSS', 'JavaScript'];
+
+// 1. Звернення за індексом:
+console.log(stack[0]); // 'HTML' (перший елемент)
+console.log(stack[1]); // 'CSS'
+console.log(stack[99]); // undefined (неіснуючий індекс не ламає програму, а повертає undefined)
+
+// 2. Отримання останнього елемента:
+console.log(stack[stack.length - 1]); // 'JavaScript' (класичний спосіб)
+console.log(stack.at(-1));             // 'JavaScript' (сучасний метод at: -1 останній, -2 передостанній)
+
+// 3. Зміна значення:
+stack[1] = 'Tailwind CSS';
+console.log(stack); // ['HTML', 'Tailwind CSS', 'JavaScript']
+
+// 4. Властивість length:
+console.log(stack.length); // 3
+
+// ⚠️ length можна змінювати вручну!
+stack.length = 2; // Примусове обрізання: видаляє третій елемент назавжди!
+console.log(stack); // ['HTML', 'Tailwind CSS']
+
+stack.length = 0; // Найшвидший ідіоматичний спосіб повністю очистити масив
+console.log(stack); // []</div>
+
+        <!-- 7. Перебір масиву -->
+        <h3 class="theory-subtitle">7. Перебір масиву (for, while, for...of)</h3>
+        <p class="theory-p">
+          Для послідовної обробки кожного елемента колекції використовуються цикли:
+        </p>
+        <div class="theory-code-block">
+const numbers = [10, 20, 30, 40];
+
+// Спосіб А: Класичний for (повний контроль над індексом i):
+for (let i = 0; i &lt; numbers.length; i++) {
+  console.log(`Індекс ${i} має значення ${numbers[i]}`);
+}
+
+// Зворотний перебір:
+for (let i = numbers.length - 1; i >= 0; i--) {
+  console.log(numbers[i]);
+}
+
+// Спосіб Б: Сучасний for...of (найчистіший синтаксис для роботи зі значеннями):
+for (const num of numbers) {
+  console.log(num); // прямо отримуємо значення без numbers[i]
+}
+
+// Спосіб В: Цикл while:
+let idx = 0;
+while (idx &lt; numbers.length) {
+  console.log(numbers[idx]);
+  idx++;
+}
+
+// ⚠️ ЧОМУ НЕ МОЖНА ВИКОРИСТОВУВАТИ for...in ДЛЯ МАСИВІВ?
+// for...in призначений для перебору ключів звичайних об'єктів. Він перебирає властивості
+// у довільному порядку, перетворює числові індекси на рядки ("0", "1") та захоплює зайві поля з прототипу.</div>
+
+        <!-- 8. Операції з масивами -->
+        <h3 class="theory-subtitle">8. Операції з масивами (push, pop, shift, unshift, includes, indexOf)</h3>
+        <p class="theory-p">
+          Масиви дозволяють працювати з обома своїми кінцями. Зверніть особливу увагу на <b>часову складність</b>:
+        </p>
+        <div class="theory-grid-cards">
+          <div class="theory-card">
+            <div class="theory-card-title">⚡ Робота з кінцем: push / pop (O(1))</div>
             <p style="font-size:13.5px; line-height:1.6; color:#444;">
-              У низькорівневих мовах масив — це неперервний блок памʼяті. Адреса будь-якого елемента обчислюється миттєво за формулою:
-              <br><code>Address = BaseAddress + Index * ElementSize</code>.
-              Саме тому індексація починається з <b>0</b>: перший елемент знаходиться зі зміщенням <code>0 * ElementSize</code> від початку блоку! Доступ до будь-якого елемента за індексом відбувається за <b>O(1)</b> (константний час).
+              • <code>arr.push(x)</code> — додає елемент у кінець масиву. Працює миттєво за <b>O(1)</b>.<br>
+              • <code>arr.pop()</code> — знімає останній елемент і повертає його. Також <b>O(1)</b>.<br>
+              Разом вони утворюють класичний <b>Стек (LIFO — Last In, First Out)</b>.
             </p>
           </div>
-
           <div class="theory-card">
-            <h3 class="theory-card-title">🔗 Посилання (Reference) vs Значення</h3>
+            <div class="theory-card-title">🐢 Робота з початком: unshift / shift (O(n))</div>
             <p style="font-size:13.5px; line-height:1.6; color:#444;">
-              Змінна, в яку записано масив, зберігає не самі дані, а <b>посилання на область у купі (Heap)</b>. Якщо скопіювати змінну <code>let b = a</code>, обидві змінні вказуватимуть на один і той самий масив. Для незалежної копії використовують спред-синтаксис: <code>let copy = [...a]</code> або <code>a.slice()</code>.
-            </p>
-          </div>
-
-          <div class="theory-card">
-            <h3 class="theory-card-title">🛠️ Створення масивів</h3>
-            <p style="font-size:13.5px; line-height:1.6; color:#444;">
-              • Літерал: <code>const arr = [1, 2, 3];</code> (найбільш рекомендований)<br>
-              • Конструктор: <code>new Array(5);</code> (створює 5 порожніх комірок)<br>
-              • Заповнення: <code>new Array(3).fill(0);</code> -> <code>[0, 0, 0]</code><br>
-              • Діапазон: <code>Array.from({ length: 5 }, (_, i) => i + 1);</code>
-            </p>
-          </div>
-
-          <div class="theory-card">
-            <h3 class="theory-card-title">⚡ Стек (LIFO) та Черга (FIFO)</h3>
-            <p style="font-size:13.5px; line-height:1.6; color:#444;">
-              • <b>push() / pop()</b>: додавання та вилучення з <i>кінця</i> масиву. Працюють за <b>O(1)</b>.<br>
-              • <b>unshift() / shift()</b>: додавання та вилучення з <i>початку</i> масиву. Працюють за <b>O(n)</b>, тому що всі наступні елементи повинні зсунутися у памʼяті!
-            </p>
-          </div>
-
-          <div class="theory-card">
-            <h3 class="theory-card-title">✂️ slice проти splice</h3>
-            <p style="font-size:13.5px; line-height:1.6; color:#444;">
-              • <b>slice(start, end)</b>: <u>НЕ мутує</u> оригінал. Повертає новий підмасив.<br>
-              • <b>splice(start, count, ...items)</b>: <u>МУТУЄ</u> оригінальний масив на місці. Дозволяє видаляти, вставляти або замінювати елементи.
-            </p>
-          </div>
-
-          <div class="theory-card">
-            <h3 class="theory-card-title">📊 Багатовимірні масиви (2D)</h3>
-            <p style="font-size:13.5px; line-height:1.6; color:#444;">
-              Масив, елементами якого є інші масиви: <code>matrix[row][col]</code>. Застосовується для ігрових полів (шахи, хрестики-нулики, морський бій), електронних таблиць, зображень та координатних сіток.
+              • <code>arr.unshift(x)</code> — додає на початок (індекс 0).<br>
+              • <code>arr.shift()</code> — вилучає перший елемент.<br>
+              Обидві операції змушують рушій <b>пересунути всі інші N елементів</b> на одну позицію в пам'яті, тому вони працюють набагато повільніше — за <b>O(n)</b>.
             </p>
           </div>
         </div>
+
+        <div class="theory-code-block">
+const list = ['A', 'B'];
+
+list.push('C');      // ['A', 'B', 'C'] —&gt; O(1)
+const last = list.pop(); // last = 'C', list = ['A', 'B'] —&gt; O(1)
+
+list.unshift('Start'); // ['Start', 'A', 'B'] —&gt; O(n)
+const first = list.shift(); // first = 'Start', list = ['A', 'B'] —&gt; O(n)
+
+// Пошук та перевірка наявності:
+const animals = ['кіт', 'собака', 'папуга'];
+
+// .includes(val) —&gt; повертає true/false:
+console.log(animals.includes('собака')); // true
+console.log(animals.includes('вовк'));   // false
+
+// .indexOf(val) —&gt; повертає перший індекс або -1:
+console.log(animals.indexOf('папуга')); // 2
+console.log(animals.indexOf('тигр'));   // -1</div>
+
+        <!-- 9. Робота з підмасивами -->
+        <h3 class="theory-subtitle">9. Робота з підмасивами (slice, splice, concat)</h3>
+        <p class="theory-p">
+          Це одна з найважливіших тем, де початківці часто припускаються помилок через різницю в мутабельності:
+        </p>
+        <div class="theory-grid-cards">
+          <div class="theory-card" style="border-left: 4px solid #10b981;">
+            <div class="theory-card-title">✂️ slice(start, end) — ІМУТАБЕЛЬНИЙ</div>
+            <p style="font-size:13.5px; line-height:1.6; color:#444;">
+              <b>НЕ змінює</b> оригінальний масив. Копіює елементи від індексу <code>start</code> до <code>end</code> (сам індекс <code>end</code> не включається!). Повертає абсолютно новий масив.
+            </p>
+          </div>
+          <div class="theory-card" style="border-left: 4px solid #ef4444;">
+            <div class="theory-card-title">🔪 splice(start, deleteCount, ...items) — МУТУЮЧИЙ</div>
+            <p style="font-size:13.5px; line-height:1.6; color:#444;">
+              <b>ЗМІНЮЄ (мутує)</b> оригінальний масив на місці! Починаючи з індексу <code>start</code>, вирізає <code>deleteCount</code> елементів і вставляє нові <code>items</code>. Повертає масив видалених елементів.
+            </p>
+          </div>
+        </div>
+
+        <div class="theory-code-block">
+// Приклад slice (безпечний):
+const letters = ['a', 'b', 'c', 'd', 'e'];
+const part = letters.slice(1, 4); // від індексу 1 до 3 включно
+console.log(part);    // ['b', 'c', 'd']
+console.log(letters); // ['a', 'b', 'c', 'd', 'e'] (оригінал не постраждав)
+
+// Приклад splice (мутація оригіналу):
+const items = ['ніж', 'вилка', 'ложка', 'тарілка'];
+// Видалити 1 елемент починаючи з індексу 2 ('ложка') та вставити замість нього 'чашка':
+const removed = items.splice(2, 1, 'чашка');
+console.log(removed); // ['ложка']
+console.log(items);   // ['ніж', 'вилка', 'чашка', 'тарілка']
+
+// Об'єднання масивів concat vs Spread:
+const a = [1, 2];
+const b = [3, 4];
+const combined = a.concat(b, [5, 6]); // [1, 2, 3, 4, 5, 6] (новий масив)
+const modern = [...a, ...b, 7, 8];    // [1, 2, 3, 4, 7, 8]</div>
+
+        <!-- 10. Багатовимірні масиви -->
+        <h3 class="theory-subtitle">10. Багатовимірні масиви (Матриці 2D, 3D)</h3>
+        <p class="theory-p">
+          <b>Багатовимірний масив</b> — це масив, елементами якого є інші масиви. Найпоширенішим є двовимірний масив (матриця, сітка, таблиця), де перший індекс визначає рядок (<b>row</b>), а другий — стовпець (<b>col</b>).
+        </p>
+        <div class="theory-diagram">
+Матриця 3x3:
+               стовпець 0   стовпець 1   стовпець 2
+  рядок 0 ──&gt;  [  11,          12,          13   ]
+  рядок 1 ──&gt;  [  21,          22,          23   ]
+  рядок 2 ──&gt;  [  31,          32,          33   ]
+
+Звернення: matrix[1][2] обере рядок 1 ("21, 22, 23"), а потім стовпець 2 —&gt; значення 23</div>
+
+        <div class="theory-code-block">
+// Створення двовимірного масиву:
+const grid = [
+  ['X', 'O', 'X'],
+  ['O', 'X', 'O'],
+  ['O', 'X', 'X']
+];
+
+console.log(grid[0][0]); // 'X' (верхній лівий кут)
+console.log(grid[1][1]); // 'X' (центр поля)
+
+// ⚠️ ПАСТКА при створенні порожньої матриці:
+// НЕ РОБІТЬ ТАК:
+const badGrid = new Array(3).fill(new Array(3).fill(0));
+badGrid[0][0] = 99;
+// ЖАХ! Усі три рядки посилаються на один і той самий масив: badGrid[1][0] теж стало 99!
+
+// ПРАВИЛЬНЕ СТВОРЕННЯ МАТРИЦІ (незалежні рядки):
+const goodGrid = Array.from({ length: 3 }, () => new Array(3).fill(0));
+goodGrid[0][0] = 99;
+console.log(goodGrid[1][0]); // 0 (кожен рядок незалежний!)
+
+// Перебір матриці двома вкладеними циклами:
+for (let r = 0; r &lt; grid.length; r++) {
+  for (let c = 0; c &lt; grid[r].length; c++) {
+    console.log(`Рядок ${r}, Стовпець ${c}: ${grid[r][c]}`);
+  }
+}</div>
+
+        <!-- 11. Практичні приклади -->
+        <h3 class="theory-subtitle">11. Практичні приклади створення та використання одновимірних і багатовимірних масивів</h3>
+        <p class="theory-p">
+          Розгляньмо кілька популярних прикладів з реальних веб-додатків:
+        </p>
+
+        <div class="theory-code-block">
+// Приклад 1: Підрахунок вартості кошика інтернет-магазину
+const cart = [
+  { title: 'Ноутбук', price: 25000, qty: 1 },
+  { title: 'Мишка', price: 800, qty: 2 },
+  { title: 'Килимок', price: 300, qty: 1 }
+];
+
+let totalAmount = 0;
+for (const item of cart) {
+  totalAmount += item.price * item.qty;
+}
+console.log(`Загальна сума до сплати: ${totalAmount} грн`); // 26900 грн
+
+// Приклад 2: Пошук екстремумів (найбільшого та найменшого числа)
+const scores = [85, 92, 45, 98, 77, 88];
+let min = scores[0];
+let max = scores[0];
+
+for (let i = 1; i &lt; scores.length; i++) {
+  if (scores[i] &lt; min) min = scores[i];
+  if (scores[i] &gt; max) max = scores[i];
+}
+console.log(`Мінімум: ${min}, Максимум: ${max}`); // 45 та 98
+
+// Приклад 3: Перевірка діагоналі в грі "Хрестики-нулики"
+function checkMainDiagonal(board) {
+  const first = board[0][0];
+  if (!first) return false;
+  for (let i = 1; i &lt; board.length; i++) {
+    if (board[i][i] !== first) return false;
+  }
+  return true;
+}</div>
       </div>
     </div>
 
@@ -1030,8 +1414,6 @@
     </div>
   </div>
 
-  <!-- Toast Notification -->
-  
   <!-- Teacher Auth Modal -->
   <div id="teacherAuthModal" class="modal-overlay" style="display: none;">
     <div class="modal-card">
@@ -1044,35 +1426,7 @@
       </div>
       <div class="modal-body">
         <p style="color:#9ba1b0; font-size:13px; line-height:1.5; margin:0 0 16px 0;">
-          Еталонні рішення надійно зашифровані AES-256-GCM. Введіть пароль викладача для розблокування режиму ментора:
-        </p>
-        <div style="margin-bottom:12px;">
-          <input type="password" id="teacherPasswordInput" placeholder="Пароль викладача..." autocomplete="off" style="width:100%; box-sizing:border-box; padding:10px 14px; border-radius:9999px; border:1px solid rgba(255,255,255,0.15); background:#111216; color:#f3f4f6; font-size:14px; outline:none; font-family:inherit;" />
-        </div>
-        <div id="teacherAuthStatus" style="font-size:12px; margin-bottom:14px; min-height:16px; font-weight:500;"></div>
-        <div style="display:flex; justify-content:flex-end; gap:8px;">
-          <button class="btn-pill btn-pill-outline" id="cancelTeacherAuthBtn">Скасувати</button>
-          <button class="btn-pill btn-pill-primary" id="submitTeacherAuthBtn">Розблокувати</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast Notification -->
-  
-  <!-- Teacher Auth Modal -->
-  <div id="teacherAuthModal" class="modal-overlay" style="display: none;">
-    <div class="modal-card">
-      <div class="modal-header">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span style="font-size:18px;">🔐</span>
-          <h3 style="margin:0; font-size:16px; font-weight:600;">Вхід для викладача</h3>
-        </div>
-        <button class="modal-close" id="closeTeacherModalBtn">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p style="color:#9ba1b0; font-size:13px; line-height:1.5; margin:0 0 16px 0;">
-          Еталонні рішення надійно зашифровані AES-256-GCM. Введіть пароль викладача для розблокування режиму ментора:
+          Еталонні рішення та менторські розбори надійно зашифровані AES-256-GCM. Введіть пароль для розблокування режиму ментора:
         </p>
         <div style="margin-bottom:12px;">
           <input type="password" id="teacherPasswordInput" placeholder="Пароль викладача..." autocomplete="off" style="width:100%; box-sizing:border-box; padding:10px 14px; border-radius:9999px; border:1px solid rgba(255,255,255,0.15); background:#111216; color:#f3f4f6; font-size:14px; outline:none; font-family:inherit;" />
@@ -1100,6 +1454,7 @@
     let currentTask = ALL_TASKS[0];
     const completedTasks = new Set(JSON.parse(localStorage.getItem('js_arrays_completed') || '[]'));
     const userCodes = JSON.parse(localStorage.getItem('js_arrays_codes') || '{}');
+    let decryptedSolutionsCache = null;
 
     // DOM Elements
     const tabs = document.querySelectorAll('.tab-btn');
@@ -1156,7 +1511,19 @@
 
     document.getElementById('formatCodeBtn').addEventListener('click', formatCurrentCode);
 
-    // Keyboard Shortcuts
+    // Robust Format shortcut detector (works on Mac Option, Windows Alt, and Ukrainian/English layouts)
+    function isFormatShortcut(e) {
+      const isKeyF = e.code === 'KeyF' || 
+                     e.key === 'F' || e.key === 'f' || 
+                     e.key === 'Ï' || e.key === 'ƒ' || 
+                     e.key === 'А' || e.key === 'а';
+      
+      const isShiftAltF = e.shiftKey && e.altKey && isKeyF;
+      const isMacCmdShiftF = (e.metaKey || e.ctrlKey) && (e.shiftKey || e.altKey) && isKeyF;
+      return isShiftAltF || isMacCmdShiftF;
+    }
+
+    // Keyboard Shortcuts inside editor
     codeEditor.addEventListener('keydown', (e) => {
       if (e.key === 'Tab') {
         e.preventDefault();
@@ -1170,8 +1537,9 @@
         e.preventDefault();
         runSingleTaskTest();
       }
-      if (e.shiftKey && e.altKey && (e.key === 'F' || e.key === 'f')) {
+      if (isFormatShortcut(e)) {
         e.preventDefault();
+        e.stopPropagation();
         formatCurrentCode();
       }
     });
@@ -1214,7 +1582,7 @@
           activeModuleTitle.textContent = m.title;
           moduleDropdownMenu.classList.remove('open');
           const firstTaskInM = ALL_TASKS.find(t => t.moduleIdx === m.idx);
-          selectTask(firstTaskInM);
+          if (firstTaskInM) selectTask(firstTaskInM);
           renderModuleDropdown();
         });
         moduleDropdownMenu.appendChild(item);
@@ -1260,7 +1628,7 @@
       taskReqs.innerHTML = task.reqs.map(r => `<li>${r}</li>`).join('');
       taskHintContent.innerHTML = task.hint;
 
-      editorFilename.textContent = `src/${mod.filename}`;
+      editorFilename.textContent = `src/${mod ? mod.filename : 'task.js'}`;
 
       if (userCodes[task.id]) {
         codeEditor.value = userCodes[task.id];
@@ -1271,6 +1639,10 @@
       consoleBody.innerHTML = '<div style="color:#9ba1b0;">Натисніть "Запустити тест" або комбінацію Ctrl + Enter для перевірки коду.</div>';
       testSummaryStatus.textContent = 'Очікує запуску';
       testSummaryStatus.style.color = '#9ba1b0';
+
+      if (decryptedSolutionsCache && decryptedSolutionsCache[task.id]) {
+        renderTeacherGuide(task.id);
+      }
 
       renderQuickTaskPills();
       updateProgress();
@@ -1333,34 +1705,73 @@
         });
 
         if (passedAll) {
-          testSummaryStatus.textContent = '✓ ВСІ ТЕСТИ ПРОЙДЕНО!';
-          testSummaryStatus.style.color = '#34d399';
+          testSummaryStatus.textContent = 'Усі тести пройдено!';
+          testSummaryStatus.style.color = '#10b981';
           completedTasks.add(currentTask.id);
           localStorage.setItem('js_arrays_completed', JSON.stringify([...completedTasks]));
-          showToast('🎉 Завдання ' + currentTask.id + ' успішно виконано!');
           renderQuickTaskPills();
           renderModuleDropdown();
           updateProgress();
+          showToast('🎉 Чудова робота! Завдання пройдено.');
         } else {
-          testSummaryStatus.textContent = '✗ Є ПОМИЛКИ В ТЕСТАХ';
-          testSummaryStatus.style.color = '#f87171';
+          testSummaryStatus.textContent = 'Деякі тести не пройшли';
+          testSummaryStatus.style.color = '#ef4444';
         }
       } catch (err) {
-        consoleBody.innerHTML = `<div style="color:#ef4444; font-weight:600;">Помилка виконання коду: ${err.message}</div>`;
-        testSummaryStatus.textContent = '✗ ПОМИЛКА СИНТАКСИСУ';
+        consoleBody.innerHTML = `<div style="color:#ef4444; padding:8px 0;"><b>Синтаксична або критична помилка:</b> ${err.message}</div>`;
+        testSummaryStatus.textContent = 'Помилка коду';
         testSummaryStatus.style.color = '#ef4444';
       }
     }
 
     document.getElementById('runTestBtn').addEventListener('click', runSingleTaskTest);
 
-    // --- Teacher Authentication & WebCrypto AES-GCM Decryption ---
-    const TEACHER_SALT = "camp_salt_2026_secure";
-    let decryptedSolutionsCache = null;
+    // Reset Current Task
+    document.getElementById('resetCurrentTaskBtn').addEventListener('click', () => {
+      if (confirm('Скинути код поточного завдання до початкового стану?')) {
+        delete userCodes[currentTask.id];
+        localStorage.setItem('js_arrays_codes', JSON.stringify(userCodes));
+        codeEditor.value = `export function ${currentTask.name}(${currentTask.starterParams}) {\n  // TODO: напишіть вашу реалізацію тут\n  ${currentTask.starterBody}\n}`;
+        showToast('Код поточного завдання скинуто.');
+      }
+    });
 
+    // Reset All
+    document.getElementById('resetAllBtn').addEventListener('click', () => {
+      if (confirm('УВАГА: Це скине весь збережений код та історію прогресу. Продовжити?')) {
+        localStorage.removeItem('js_arrays_codes');
+        localStorage.removeItem('js_arrays_completed');
+        location.reload();
+      }
+    });
+
+    // Task navigation
+    document.getElementById('prevTaskBtn').addEventListener('click', () => {
+      const idx = ALL_TASKS.findIndex(t => t.id === currentTask.id);
+      if (idx > 0) selectTask(ALL_TASKS[idx - 1]);
+    });
+
+    document.getElementById('nextTaskBtn').addEventListener('click', () => {
+      const idx = ALL_TASKS.findIndex(t => t.id === currentTask.id);
+      if (idx < ALL_TASKS.length - 1) selectTask(ALL_TASKS[idx + 1]);
+    });
+
+    // Tab Switching
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const target = tab.dataset.tab;
+        Object.keys(tabContents).forEach(k => {
+          tabContents[k].style.display = k === target ? 'block' : 'none';
+        });
+      });
+    });
+
+    // WebCrypto AES-256-GCM Decryption
     async function getTeacherCryptoKey(password) {
       const enc = new TextEncoder();
-      const salt = enc.encode(TEACHER_SALT);
+      const salt = enc.encode("camp_salt_2026_secure");
       const keyMaterial = await window.crypto.subtle.importKey(
         "raw",
         enc.encode(password),
@@ -1412,7 +1823,12 @@
 
         const cache = {};
         for (const [id, payload] of Object.entries(ENCRYPTED_SOLUTIONS)) {
-          cache[id] = await decryptPayloadWithKey(payload, key);
+          const raw = await decryptPayloadWithKey(payload, key);
+          try {
+            cache[id] = JSON.parse(raw);
+          } catch {
+            cache[id] = { code: raw, explanation: "" };
+          }
         }
         decryptedSolutionsCache = cache;
         sessionStorage.setItem('camp_teacher_pwd', password);
@@ -1430,10 +1846,35 @@
       applyTeacherUI(false);
     }
 
+    function renderTeacherGuide(taskId) {
+      const contentEl = document.getElementById('teacherGuideContent');
+      if (!contentEl || !decryptedSolutionsCache || !decryptedSolutionsCache[taskId]) return;
+      const data = decryptedSolutionsCache[taskId];
+      const expl = typeof data === 'object' && data.explanation ? data.explanation : '';
+      contentEl.innerHTML = expl || '<p style="color:#6b7280;">Пояснення для цього завдання готується.</p>';
+    }
+
     function applyTeacherUI(isUnlocked) {
-      const revealBtn = document.getElementById("revealSolutionBtn");
+      const revealBtn = document.getElementById('revealSolutionBtn');
       if (revealBtn) {
-        revealBtn.style.display = isUnlocked ? "inline-flex" : "none";
+        revealBtn.style.display = isUnlocked ? 'inline-flex' : 'none';
+      }
+      const teacherGuideBox = document.getElementById('teacherGuideBox');
+      if (teacherGuideBox) {
+        teacherGuideBox.style.display = isUnlocked ? 'block' : 'none';
+        if (isUnlocked && decryptedSolutionsCache && currentTask) {
+          renderTeacherGuide(currentTask.id);
+        }
+      }
+      const teacherAuthBtn = document.getElementById('teacherAuthBtn');
+      if (teacherAuthBtn) {
+        if (isUnlocked) {
+          teacherAuthBtn.classList.add('teacher-active');
+          teacherAuthBtn.textContent = '🔓 Викладач (Активно)';
+        } else {
+          teacherAuthBtn.classList.remove('teacher-active');
+          teacherAuthBtn.textContent = '🔐 Викладач';
+        }
       }
     }
 
@@ -1474,7 +1915,7 @@
 
       if (ok) {
         closeTeacherModal();
-        showToast('🎓 Режим викладача активовано! Еталонні рішення розблоковано.');
+        showToast('🎓 Режим викладача активовано! Еталонні рішення та розбори розблоковано.');
       } else {
         teacherAuthStatus.textContent = '❌ Невірний пароль викладача';
         teacherAuthStatus.style.color = '#ef4444';
@@ -1483,7 +1924,7 @@
 
     document.getElementById('teacherAuthBtn')?.addEventListener('click', () => {
       if (decryptedSolutionsCache) {
-        if (confirm('Вийти з режиму викладача та сховати еталонні рішення?')) {
+        if (confirm('Вийти з режиму викладача та заблокувати еталонні рішення?')) {
           lockTeacherMode();
           showToast('Режим викладача деактивовано.');
         }
@@ -1500,77 +1941,63 @@
       if (e.key === 'Escape') closeTeacherModal();
     });
 
+    // Global Keydown Handler
     window.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+      // Teacher mode stealth toggle: Ctrl/Cmd + Shift + A
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.code === 'KeyA' || e.key === 'A' || e.key === 'a')) {
         e.preventDefault();
         if (decryptedSolutionsCache) {
-          if (confirm("Вийти з режиму викладача та сховати еталонні рішення?")) { lockTeacherMode(); showToast("Режим викладача деактивовано."); }
+          if (confirm('Вийти з режиму викладача?')) lockTeacherMode();
         } else {
           openTeacherModal();
+        }
+        return;
+      }
+
+      // Format code shortcut from anywhere on the page
+      if (typeof isFormatShortcut === 'function' && isFormatShortcut(e)) {
+        const activeTag = document.activeElement ? document.activeElement.tagName : '';
+        if (activeTag !== 'INPUT') {
+          e.preventDefault();
+          formatCurrentCode();
+        }
+        return;
+      }
+
+      // Ctrl + Enter or Cmd + Enter to run test from anywhere on the page
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'Enter' || e.code === 'Enter' || e.code === 'NumpadEnter')) {
+        const activeTag = document.activeElement ? document.activeElement.tagName : '';
+        if (activeTag !== 'INPUT') {
+          e.preventDefault();
+          runSingleTaskTest();
         }
       }
     });
 
-    // Reveal Solution
-    document.getElementById('revealSolutionBtn').addEventListener('click', () => {
+    // Reveal & Paste Solution
+    function pasteTeacherSolution() {
       if (!decryptedSolutionsCache || !decryptedSolutionsCache[currentTask.id]) {
         showToast('Потрібна авторизація викладача');
         openTeacherModal();
         return;
       }
-      codeEditor.value = `export function ${currentTask.name}(${currentTask.starterParams}) {\n  ${decryptedSolutionsCache[currentTask.id]}\n}`;
+      const data = decryptedSolutionsCache[currentTask.id];
+      const solCode = typeof data === 'object' && data.code ? data.code : data;
+      codeEditor.value = `export function ${currentTask.name}(${currentTask.starterParams}) {\n  ${solCode}\n}`;
       saveCurrentCode();
       showToast('💡 Еталонне рішення вставлено (Режим ментора).');
-    });
-
-    // Check saved session
-    const savedTeacherPwd = sessionStorage.getItem('camp_teacher_pwd');
-    if (savedTeacherPwd) {
-      verifyAndUnlockTeacher(savedTeacherPwd);
-    } else {
-      applyTeacherUI(false);
     }
 
-    // Reset current task
-    document.getElementById('resetCurrentTaskBtn').addEventListener('click', () => {
-      if (confirm('Скинути код цього завдання до початкового шаблону?')) {
-        delete userCodes[currentTask.id];
-        localStorage.setItem('js_arrays_codes', JSON.stringify(userCodes));
-        selectTask(currentTask);
-        showToast('Код завдання скинуто.');
-      }
-    });
+    document.getElementById('revealSolutionBtn')?.addEventListener('click', pasteTeacherSolution);
+    document.getElementById('pasteTeacherSolutionBtn')?.addEventListener('click', pasteTeacherSolution);
 
-    // Reset all tasks
-    document.getElementById('resetAllBtn').addEventListener('click', () => {
-      if (confirm('Скинути весь прогрес і всі збережені розвʼязки?')) {
-        localStorage.removeItem('js_arrays_codes');
-        localStorage.removeItem('js_arrays_completed');
-        location.reload();
-      }
-    });
-
-    // Task navigation
-    document.getElementById('prevTaskBtn').addEventListener('click', () => {
-      const idx = ALL_TASKS.findIndex(t => t.id === currentTask.id);
-      if (idx > 0) selectTask(ALL_TASKS[idx - 1]);
-    });
-
-    document.getElementById('nextTaskBtn').addEventListener('click', () => {
-      const idx = ALL_TASKS.findIndex(t => t.id === currentTask.id);
-      if (idx < ALL_TASKS.length - 1) selectTask(ALL_TASKS[idx + 1]);
-    });
-
-    // Tab Switching
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const target = tab.dataset.tab;
-        Object.keys(tabContents).forEach(k => {
-          tabContents[k].style.display = k === target ? 'block' : 'none';
+    document.getElementById('copyTeacherExplBtn')?.addEventListener('click', () => {
+      const contentEl = document.getElementById('teacherGuideContent');
+      if (contentEl) {
+        navigator.clipboard.writeText(contentEl.innerText).then(() => {
+          showToast('📋 Пояснення скопійовано в буфер обміну!');
         });
-      });
+      }
     });
 
     // Mass Runner Execution
@@ -1594,10 +2021,15 @@
         massRunnerPercentText.textContent = percent + '%';
         massRunnerStatusText.textContent = `Тестування завдання ${task.id} (${task.name})...`;
 
-        // Code to test: student code if saved, otherwise initial starter stub
-        const codeToTest = userCodes[task.id] 
-          ? userCodes[task.id] 
-          : `function ${task.name}(${task.starterParams}) {\n  ${task.starterBody}\n}`;
+        let codeToTest = userCodes[task.id];
+        if (!codeToTest && decryptedSolutionsCache && decryptedSolutionsCache[task.id]) {
+          const d = decryptedSolutionsCache[task.id];
+          const sol = typeof d === 'object' && d.code ? d.code : d;
+          codeToTest = `function ${task.name}(${task.starterParams}) { ${sol} }`;
+        }
+        if (!codeToTest) {
+          codeToTest = `function ${task.name}(${task.starterParams}) { ${task.starterBody} }`;
+        }
 
         let taskPassed = true;
         try {
@@ -1661,6 +2093,14 @@
       });
     } catch (e) {
       document.getElementById('onlineCountText').textContent = '1 онлайн';
+    }
+
+    // Check saved teacher session
+    const savedTeacherPwd = sessionStorage.getItem('camp_teacher_pwd');
+    if (savedTeacherPwd) {
+      verifyAndUnlockTeacher(savedTeacherPwd);
+    } else {
+      applyTeacherUI(false);
     }
 
     // Initial render
