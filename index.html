@@ -9,6 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
   <!-- Prettier Standalone for Code Formatting -->
   <script src="https://cdn.jsdelivr.net/npm/prettier@3.3.3/standalone.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prettier@3.3.3/plugins/babel.js"></script>
@@ -679,18 +682,114 @@
       gap: 8px;
     }
 
+    
+    .theory-code-frame {
+      background: #18191f;
+      border: 1px solid #000000;
+      border-radius: var(--radius-subcard, 8px);
+      margin: 16px 0 22px 0;
+      overflow: hidden;
+      box-shadow: 2px 2px 0px #000000;
+    }
+
+    .theory-code-topbar {
+      background: #111216;
+      border-bottom: 1px solid #282a36;
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #9ba1b0;
+    }
+
+    .theory-code-topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mac-dots {
+      display: inline-flex;
+      gap: 5px;
+    }
+
+    .mac-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .mac-dot-red { background: #ff5f56; }
+    .mac-dot-yellow { background: #ffbd2e; }
+    .mac-dot-green { background: #27c93f; }
+
+    .theory-code-lang {
+      font-weight: 700;
+      color: var(--color-sunshine-highlight);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .theory-copy-btn {
+      background: #252836;
+      color: #e5e7eb;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .theory-copy-btn:hover {
+      background: #374151;
+      color: #ffffff;
+    }
+
+    .theory-code-content {
+      margin: 0 !important;
+      padding: 16px 20px !important;
+      background: #18191f !important;
+      color: #f8f8f2 !important;
+      font-family: var(--font-mono) !important;
+      font-size: 13.5px !important;
+      line-height: 1.65 !important;
+      white-space: pre !important;
+      tab-size: 2 !important;
+      overflow-x: auto !important;
+      border: none !important;
+    }
+
+    .theory-code-content code {
+      font-family: inherit !important;
+      font-size: inherit !important;
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+      color: inherit !important;
+      white-space: pre !important;
+    }
+
     .theory-code-block {
       background: #18191f;
       color: #f8f8f2;
       font-family: var(--font-mono);
       font-size: 13.5px;
-      line-height: 1.6;
+      line-height: 1.65;
       padding: 16px 20px;
       border-radius: var(--radius-subcard);
       margin: 14px 0 18px 0;
       overflow-x: auto;
       border: 1px solid #2d3139;
+      white-space: pre !important;
+      tab-size: 2;
     }
+
 
     .theory-diagram {
       background: #f1f5f9;
@@ -1066,7 +1165,15 @@
           <br>
           Коли ви присвоюєте масив іншій змінній (<code>const b = a;</code>), копіюються не самі дані, а лише <b>посилання (адреса в пам'яті)</b>. Зміна елемента через змінну <code>b</code> негайно відобразиться у змінній <code>a</code>.
         </div>
-        <div class="theory-code-block">
+        <div class="theory-code-frame">
+          <div class="theory-code-topbar">
+            <div class="theory-code-topbar-left">
+              <span class="mac-dots"><span class="mac-dot mac-dot-red"></span><span class="mac-dot mac-dot-yellow"></span><span class="mac-dot mac-dot-green"></span></span>
+              <span class="theory-code-lang">JavaScript</span>
+            </div>
+            <button class="theory-copy-btn" onclick="copyTheoryCode(this)">📋 Скопіювати</button>
+          </div>
+          <pre class="theory-code-content"><code class="language-javascript">
 // Копіювання за посиланням (Reference):
 const original = [1, 2, 3];
 const alias = original; // alias вказує на той самий блок пам'яті!
@@ -1077,7 +1184,8 @@ console.log(original); // [1, 2, 3, 4] — оригінал теж змінив�
 // Справжнє незалежне поверхневе копіювання:
 const independentCopy = [...original]; // або original.slice()
 independentCopy.push(99);
-console.log(original); // [1, 2, 3, 4] — оригінал незмінний!</div>
+console.log(original); // [1, 2, 3, 4] — оригінал незмінний!</code></pre>
+        </div>
 
         <!-- 4. Як влаштовані масиви в памʼяті -->
         <h3 class="theory-subtitle">4. Як влаштовані масиви в памʼяті. Індекси. Нумерація з 0</h3>
@@ -1112,7 +1220,15 @@ console.log(original); // [1, 2, 3, 4] — оригінал незмінний!<
         <p class="theory-p">
           У JavaScript існує кілька способів ініціалізації нового масиву:
         </p>
-        <div class="theory-code-block">
+        <div class="theory-code-frame">
+          <div class="theory-code-topbar">
+            <div class="theory-code-topbar-left">
+              <span class="mac-dots"><span class="mac-dot mac-dot-red"></span><span class="mac-dot mac-dot-yellow"></span><span class="mac-dot mac-dot-green"></span></span>
+              <span class="theory-code-lang">JavaScript</span>
+            </div>
+            <button class="theory-copy-btn" onclick="copyTheoryCode(this)">📋 Скопіювати</button>
+          </div>
+          <pre class="theory-code-content"><code class="language-javascript">
 // 1. Літерал масиву [] (Найбільш рекомендований, швидкий та зручний спосіб):
 const fruits = ['яблуко', 'банан', 'ківі'];
 const empty = [];
@@ -1136,14 +1252,23 @@ const range = Array.from({ length: 5 }, (_, i) => i + 1); // [1, 2, 3, 4, 5]
 
 // 5. Перевірка на масив:
 console.log(Array.isArray(fruits)); // true
-console.log(typeof fruits);         // "object" (ніколи не використовуйте typeof для перевірки масивів!)</div>
+console.log(typeof fruits);         // "object" (ніколи не використовуйте typeof для перевірки масивів!)</code></pre>
+        </div>
 
         <!-- 6. Доступ до елементів масиву -->
         <h3 class="theory-subtitle">6. Доступ до елементів масиву</h3>
         <p class="theory-p">
           Звернення до комірок здійснюється за числовим індексом у квадратних дужках.
         </p>
-        <div class="theory-code-block">
+        <div class="theory-code-frame">
+          <div class="theory-code-topbar">
+            <div class="theory-code-topbar-left">
+              <span class="mac-dots"><span class="mac-dot mac-dot-red"></span><span class="mac-dot mac-dot-yellow"></span><span class="mac-dot mac-dot-green"></span></span>
+              <span class="theory-code-lang">JavaScript</span>
+            </div>
+            <button class="theory-copy-btn" onclick="copyTheoryCode(this)">📋 Скопіювати</button>
+          </div>
+          <pre class="theory-code-content"><code class="language-javascript">
 const stack = ['HTML', 'CSS', 'JavaScript'];
 
 // 1. Звернення за індексом:
@@ -1167,14 +1292,23 @@ stack.length = 2; // Примусове обрізання: видаляє тр�
 console.log(stack); // ['HTML', 'Tailwind CSS']
 
 stack.length = 0; // Найшвидший ідіоматичний спосіб повністю очистити масив
-console.log(stack); // []</div>
+console.log(stack); // []</code></pre>
+        </div>
 
         <!-- 7. Перебір масиву -->
         <h3 class="theory-subtitle">7. Перебір масиву (for, while, for...of)</h3>
         <p class="theory-p">
           Для послідовної обробки кожного елемента колекції використовуються цикли:
         </p>
-        <div class="theory-code-block">
+        <div class="theory-code-frame">
+          <div class="theory-code-topbar">
+            <div class="theory-code-topbar-left">
+              <span class="mac-dots"><span class="mac-dot mac-dot-red"></span><span class="mac-dot mac-dot-yellow"></span><span class="mac-dot mac-dot-green"></span></span>
+              <span class="theory-code-lang">JavaScript</span>
+            </div>
+            <button class="theory-copy-btn" onclick="copyTheoryCode(this)">📋 Скопіювати</button>
+          </div>
+          <pre class="theory-code-content"><code class="language-javascript">
 const numbers = [10, 20, 30, 40];
 
 // Спосіб А: Класичний for (повний контроль над індексом i):
@@ -1201,7 +1335,8 @@ while (idx &lt; numbers.length) {
 
 // ⚠️ ЧОМУ НЕ МОЖНА ВИКОРИСТОВУВАТИ for...in ДЛЯ МАСИВІВ?
 // for...in призначений для перебору ключів звичайних об'єктів. Він перебирає властивості
-// у довільному порядку, перетворює числові індекси на рядки ("0", "1") та захоплює зайві поля з прототипу.</div>
+// у довільному порядку, перетворює числові індекси на рядки ("0", "1") та захоплює зайві поля з прототипу.</code></pre>
+        </div>
 
         <!-- 8. Операції з масивами -->
         <h3 class="theory-subtitle">8. Операції з масивами (push, pop, shift, unshift, includes, indexOf)</h3>
@@ -1227,7 +1362,15 @@ while (idx &lt; numbers.length) {
           </div>
         </div>
 
-        <div class="theory-code-block">
+        <div class="theory-code-frame">
+          <div class="theory-code-topbar">
+            <div class="theory-code-topbar-left">
+              <span class="mac-dots"><span class="mac-dot mac-dot-red"></span><span class="mac-dot mac-dot-yellow"></span><span class="mac-dot mac-dot-green"></span></span>
+              <span class="theory-code-lang">JavaScript</span>
+            </div>
+            <button class="theory-copy-btn" onclick="copyTheoryCode(this)">📋 Скопіювати</button>
+          </div>
+          <pre class="theory-code-content"><code class="language-javascript">
 const list = ['A', 'B'];
 
 list.push('C');      // ['A', 'B', 'C'] —&gt; O(1)
@@ -1245,7 +1388,8 @@ console.log(animals.includes('вовк'));   // false
 
 // .indexOf(val) —&gt; повертає перший індекс або -1:
 console.log(animals.indexOf('папуга')); // 2
-console.log(animals.indexOf('тигр'));   // -1</div>
+console.log(animals.indexOf('тигр'));   // -1</code></pre>
+        </div>
 
         <!-- 9. Робота з підмасивами -->
         <h3 class="theory-subtitle">9. Робота з підмасивами (slice, splice, concat)</h3>
@@ -1267,7 +1411,15 @@ console.log(animals.indexOf('тигр'));   // -1</div>
           </div>
         </div>
 
-        <div class="theory-code-block">
+        <div class="theory-code-frame">
+          <div class="theory-code-topbar">
+            <div class="theory-code-topbar-left">
+              <span class="mac-dots"><span class="mac-dot mac-dot-red"></span><span class="mac-dot mac-dot-yellow"></span><span class="mac-dot mac-dot-green"></span></span>
+              <span class="theory-code-lang">JavaScript</span>
+            </div>
+            <button class="theory-copy-btn" onclick="copyTheoryCode(this)">📋 Скопіювати</button>
+          </div>
+          <pre class="theory-code-content"><code class="language-javascript">
 // Приклад slice (безпечний):
 const letters = ['a', 'b', 'c', 'd', 'e'];
 const part = letters.slice(1, 4); // від індексу 1 до 3 включно
@@ -1285,7 +1437,8 @@ console.log(items);   // ['ніж', 'вилка', 'чашка', 'тарілка'
 const a = [1, 2];
 const b = [3, 4];
 const combined = a.concat(b, [5, 6]); // [1, 2, 3, 4, 5, 6] (новий масив)
-const modern = [...a, ...b, 7, 8];    // [1, 2, 3, 4, 7, 8]</div>
+const modern = [...a, ...b, 7, 8];    // [1, 2, 3, 4, 7, 8]</code></pre>
+        </div>
 
         <!-- 10. Багатовимірні масиви -->
         <h3 class="theory-subtitle">10. Багатовимірні масиви (Матриці 2D, 3D)</h3>
@@ -1301,7 +1454,15 @@ const modern = [...a, ...b, 7, 8];    // [1, 2, 3, 4, 7, 8]</div>
 
 Звернення: matrix[1][2] обере рядок 1 ("21, 22, 23"), а потім стовпець 2 —&gt; значення 23</div>
 
-        <div class="theory-code-block">
+        <div class="theory-code-frame">
+          <div class="theory-code-topbar">
+            <div class="theory-code-topbar-left">
+              <span class="mac-dots"><span class="mac-dot mac-dot-red"></span><span class="mac-dot mac-dot-yellow"></span><span class="mac-dot mac-dot-green"></span></span>
+              <span class="theory-code-lang">JavaScript</span>
+            </div>
+            <button class="theory-copy-btn" onclick="copyTheoryCode(this)">📋 Скопіювати</button>
+          </div>
+          <pre class="theory-code-content"><code class="language-javascript">
 // Створення двовимірного масиву:
 const grid = [
   ['X', 'O', 'X'],
@@ -1336,7 +1497,15 @@ for (let r = 0; r &lt; grid.length; r++) {
           Розгляньмо кілька популярних прикладів з реальних веб-додатків:
         </p>
 
-        <div class="theory-code-block">
+        <div class="theory-code-frame">
+          <div class="theory-code-topbar">
+            <div class="theory-code-topbar-left">
+              <span class="mac-dots"><span class="mac-dot mac-dot-red"></span><span class="mac-dot mac-dot-yellow"></span><span class="mac-dot mac-dot-green"></span></span>
+              <span class="theory-code-lang">JavaScript</span>
+            </div>
+            <button class="theory-copy-btn" onclick="copyTheoryCode(this)">📋 Скопіювати</button>
+          </div>
+          <pre class="theory-code-content"><code class="language-javascript">
 // Приклад 1: Підрахунок вартості кошика інтернет-магазину
 const cart = [
   { title: 'Ноутбук', price: 25000, qty: 1 },
@@ -1369,7 +1538,8 @@ function checkMainDiagonal(board) {
     if (board[i][i] !== first) return false;
   }
   return true;
-}</div>
+}</code></pre>
+        </div>
       </div>
     </div>
 
@@ -1764,6 +1934,7 @@ function checkMainDiagonal(board) {
         const target = tab.dataset.tab;
         Object.keys(tabContents).forEach(k => {
           tabContents[k].style.display = k === target ? 'block' : 'none';
+        if (target === 'theory' && window.Prism) { setTimeout(() => window.Prism.highlightAll(), 30); }
         });
       });
     });
@@ -1999,6 +2170,18 @@ function checkMainDiagonal(board) {
         });
       }
     });
+
+    
+    // Copy Theory Code Snippet
+    window.copyTheoryCode = function(btn) {
+      const frame = btn.closest('.theory-code-frame');
+      const codeEl = frame ? frame.querySelector('code') : null;
+      if (codeEl) {
+        navigator.clipboard.writeText(codeEl.innerText).then(() => {
+          showToast('📋 Код прикладу скопійовано в буфер!');
+        });
+      }
+    };
 
     // Mass Runner Execution
     const startMassRunnerBtn = document.getElementById('startMassRunnerBtn');
