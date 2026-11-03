@@ -949,26 +949,6 @@
       from { opacity: 0; transform: scale(0.98); }
       to { opacity: 1; transform: scale(1); }
     }
-  
-    /* ==========================================
-       CONTENT INTEGRITY & ANTI-COPY PROTECTION
-       ========================================== */
-    body {
-      -webkit-user-select: none !important;
-      -moz-user-select: none !important;
-      -ms-user-select: none !important;
-      user-select: none !important;
-    }
-    textarea, input {
-      -webkit-user-select: text !important;
-      -moz-user-select: text !important;
-      -ms-user-select: text !important;
-      user-select: text !important;
-    }
-    .theory-copy-btn {
-      display: none !important;
-    }
-
   </style>
 </head>
 <body>
@@ -1588,8 +1568,6 @@ function checkMainDiagonal(board) {
 
     
     
-    
-    
     <!-- TAB 4: FINAL CERTIFICATION -->
     <div id="tab-final-cert" class="tab-content" style="display:none;">
       <style>
@@ -1616,15 +1594,20 @@ function checkMainDiagonal(board) {
           }
         }
       </style>
-      <!-- Exam Blur Overlay when window loses focus -->
-      <div id="certBlurOverlay" style="display:none; position:fixed; inset:0; background:rgba(15, 23, 42, 0.92); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); z-index:999999; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:24px;">
-        <span style="font-size:48px; margin-bottom:12px; display:inline-block;">⏸️</span>
-        <h2 style="font-size:24px; font-weight:700; margin-bottom:8px; color:#f8fafc;">Тест призупинено</h2>
-        <p style="font-size:15px; color:#cbd5e1; max-width:460px; margin-bottom:24px; line-height:1.6;">
-          Вікно тестування втратило фокус. Щоб продовжити роботу над завданнями, поверніться до цієї вкладки.
+      <!-- Full-Screen Exam Anti-Cheat Blur Overlay -->
+      <div id="certBlurOverlay" style="display:none; position:fixed; inset:0; background:rgba(10, 14, 26, 0.94); backdrop-filter:blur(28px) saturate(190%); -webkit-backdrop-filter:blur(28px) saturate(190%); z-index:99999999; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:32px;">
+        <span style="font-size:56px; margin-bottom:16px; display:inline-block;">⏸️</span>
+        <h2 style="font-size:26px; font-weight:800; margin-bottom:10px; color:#f8fafc; letter-spacing:-0.02em;">Тест призупинено (Античит активний)</h2>
+        <p style="font-size:15px; color:#cbd5e1; max-width:540px; margin-bottom:16px; line-height:1.6;">
+          Екран розмито, оскільки вікно іспиту втратило фокус або зафіксовано спробу копіювання / переходу на іншу вкладку чи програму.
         </p>
-        <button class="btn-pill btn-pill-primary" id="resumeCertFocusBtn" style="padding:12px 28px; font-size:15px;">
-          Повернутися до іспиту
+        <div style="background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.4); border-radius:10px; padding:12px 20px; max-width:520px; margin-bottom:24px;">
+          <p id="certInfractionNotice" style="font-size:13.5px; color:#f59e0b; margin:0; font-weight:600;">
+            Увага: втрату фокусу зафіксовано античитом. Усі порушення записуються у звіт викладача.
+          </p>
+        </div>
+        <button class="btn-pill btn-pill-primary" id="resumeCertFocusBtn" style="padding:14px 32px; font-size:15px; font-weight:700;">
+          ▶ Повернутися до іспиту
         </button>
       </div>
 
@@ -1847,12 +1830,76 @@ function checkMainDiagonal(board) {
       </div>
     </div>
   
+
+        <div class="trainer-grid">
+          <!-- Left: Task Description -->
+          <div class="task-card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+              <div>
+                <span class="task-number" id="certTaskIdBadge">1.1</span>
+                <h2 class="task-title" id="certTaskTitle" style="margin-top:8px;">Назва завдання</h2>
+              </div>
+              <span class="task-badge-level" id="certTaskLevelBadge">Базовий рівень</span>
+            </div>
+
+            <div>
+              <div class="section-title">Мета завдання</div>
+              <p class="task-goal" id="certTaskGoal">Опис завдання...</p>
+            </div>
+
+            <div>
+              <div class="section-title">Вимоги</div>
+              <ul class="req-list" id="certTaskReqs"></ul>
+            </div>
+
+            <div class="theory-callout" style="margin-top:auto; font-size:12.5px;">
+              🔒 <i>Підказки під час сертифікаційного тесту вимкнено для об'єктивної оцінки знань.</i>
+            </div>
+
+            <div class="task-navigation">
+              <button class="btn-pill btn-pill-outline" id="certPrevBtn">← Попереднє</button>
+              <button class="btn-pill btn-pill-primary" id="certNextBtn">Наступне →</button>
+            </div>
+          </div>
+
+          <!-- Right: Code Editor & Tester -->
+          <div>
+            <div class="editor-card">
+              <div class="editor-topbar">
+                <div class="editor-filename">
+                  <span>📄</span>
+                  <span id="certEditorFilename">exam-solution.js</span>
+                </div>
+                <div class="editor-actions">
+                  <button class="format-btn" id="certFormatBtn">✨ Форматувати</button>
+                  <button class="btn-pill btn-pill-outline" id="certResetTaskBtn" style="padding:4px 12px; font-size:12px;">Скинути</button>
+                </div>
+              </div>
+
+              <textarea class="editor-textarea" id="certCodeEditor" spellcheck="false" style="height:340px;"></textarea>
+
+              <div class="editor-bottombar">
+                <span style="font-size:12px; color:#9ba1b0;">Перевірте результат перед переходом до наступного завдання.</span>
+                <button class="btn-pill btn-pill-primary" id="certRunTestBtn">▶ Перевірити завдання</button>
+              </div>
+            </div>
+
+            <!-- Exam Test Results Console -->
+            <div class="console-card">
+              <div class="console-header">
+                <span>Результати перевірки завдання</span>
+                <span id="certTestStatus" style="color:#9ba1b0;">Очікує запуску</span>
+              </div>
+              <div class="console-body" id="certConsoleBody">
+                <div style="color:#9ba1b0;">Натисніть "Перевірити завдання" для перевірки коду на тестах.</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Results & Certificate View -->
-      <div id="certResultsBox" style="display:none; max-width:860px; margin:0 auto;">
+      <div id="certResultsBox" style="display:none; max-width:880px; margin:0 auto;">
         <div class="mass-runner-box" style="text-align:center;">
           <div id="certStatusIcon" style="font-size:48px; margin-bottom:8px;">🎉</div>
           <h2 id="certResultHeadline" style="font-size:26px; font-weight:700; margin-bottom:8px;">Сертифікацію успішно складено!</h2>
@@ -1900,132 +1947,73 @@ function checkMainDiagonal(board) {
             </div>
           </div>
 
-          <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+          <!-- Student Performance Breakdown Table (Variant A) -->
+          <div id="certStudentTableContainer" style="margin-top:28px; text-align:left; background:rgba(0,0,0,0.02); border:1px solid rgba(125,125,125,0.2); border-radius:12px; padding:20px; overflow-x:auto;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; border-bottom:1px solid rgba(125,125,125,0.15); padding-bottom:12px;">
+              <h3 style="margin:0; font-size:16px; font-weight:700;">📊 Зведена відомість результатів та часу</h3>
+              <div id="certTotalTimeBadge" style="font-size:13px; font-weight:600; color:var(--color-graphite, #9ba1b0); background:rgba(125,125,125,0.1); padding:4px 12px; border-radius:9999px;">
+                ⏱️ Загальний час: 00:00
+              </div>
+            </div>
+
+            <table style="width:100%; border-collapse:collapse; font-size:13px;">
+              <thead>
+                <tr style="border-bottom:1px solid rgba(125,125,125,0.2); color:var(--color-graphite, #9ba1b0); text-align:left;">
+                  <th style="padding:8px 10px; width:40px;">#</th>
+                  <th style="padding:8px 10px;">Завдання</th>
+                  <th style="padding:8px 10px;">Складність</th>
+                  <th style="padding:8px 10px; text-align:center;">Тести</th>
+                  <th style="padding:8px 10px; text-align:center;">Витрачений час</th>
+                  <th style="padding:8px 10px; text-align:right;">Підсумок</th>
+                </tr>
+              </thead>
+              <tbody id="certStudentTableBody">
+                <!-- Dynamically populated rows -->
+              </tbody>
+            </table>
+          </div>
+
+          <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:24px;">
             <button class="btn-pill btn-pill-primary" id="certPrintDocBtn" style="display:none; padding:10px 22px;">🖨️ Друк / Зберегти як PDF</button>
             <button class="btn-pill btn-pill-outline" id="certRetryExamBtn" style="padding:10px 22px;">🔄 Скласти ще раз</button>
           </div>
         </div>
       </div>
-    </div>
-  
+
+      <!-- Teacher Exam Analytics Dashboard (Variant B - Revealed in Teacher Mode) -->
+      <div id="teacherAnalyticsBox" class="mass-runner-box" style="display:none; max-width:920px; margin:28px auto 0 auto; border:2px solid #b45309; text-align:left;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px; border-bottom:1px solid rgba(125,125,125,0.2); padding-bottom:12px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:22px;">📊</span>
+            <div>
+              <h3 style="margin:0; font-size:17px; font-weight:700;">Журнал сертифікацій студентів (Менторський аналіз)</h3>
+              <div style="font-size:12px; color:var(--color-graphite, #9ba1b0);">Зведена аналітика успішності, часу та типових помилок групи</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn-pill btn-pill-primary" id="exportExamCsvBtn" style="padding:6px 14px; font-size:12px;">📥 Експорт CSV (Excel)</button>
+            <button class="btn-pill btn-pill-outline" id="clearExamLogBtn" style="padding:6px 14px; font-size:12px; color:#ef4444; border-color:rgba(239,68,68,0.3);">🗑️ Очистити</button>
           </div>
         </div>
-      </div>
 
-      <!-- Results & Certificate View -->
-      <div id="certResultsBox" style="display:none; max-width:860px; margin:0 auto;">
-        <div class="mass-runner-box" style="text-align:center;">
-          <div id="certStatusIcon" style="font-size:48px; margin-bottom:8px;">🎉</div>
-          <h2 id="certResultHeadline" style="font-size:26px; font-weight:700; margin-bottom:8px;">Сертифікацію успішно складено!</h2>
-          <p id="certResultSubtext" style="font-size:15px; color:var(--color-graphite, #6e7687); margin-bottom:20px;">
-            Ви успішно розв'язали 9 з 10 завдань (90%).
-          </p>
-
-          <!-- Input student name for certificate -->
-          <div id="certNameInputSection" style="max-width:440px; margin:0 auto 28px auto; text-align:left;">
-            <label style="display:block; font-size:13px; font-weight:700; margin-bottom:6px; color:#374151;">
-              Вкажіть ім'я та прізвище для сертифіката:
-            </label>
-            <div style="display:flex; gap:8px;">
-              <input type="text" id="certStudentNameInput" placeholder="Наприклад: Олена Коваленко" style="flex:1; padding:10px 14px; border-radius:9999px; border:1px solid #000; font-family:inherit; font-size:14px; outline:none;" />
-              <button class="btn-pill btn-pill-primary" id="certApplyNameBtn">Оновити</button>
-            </div>
-          </div>
-
-          <!-- Printable Certificate Document -->
-          <div id="certDocContainer" class="certificate-paper" style="display:none; text-align:center; background:#fffdf8; border:8px double #b45309; border-radius:12px; padding:44px 36px; box-shadow:0 8px 24px rgba(0,0,0,0.08); margin-bottom:24px; position:relative;">
-            <div style="font-size:13px; letter-spacing:0.25em; text-transform:uppercase; color:#b45309; font-weight:700; margin-bottom:6px;">СЕРТИФІКАТ ПРО ОПАНУВАННЯ МОДУЛЯ</div>
-            <div style="font-size:11px; letter-spacing:0.1em; color:#78716c; margin-bottom:20px;">CERTIFICATE OF ACHIEVEMENT</div>
-            
-            <p style="font-size:14px; color:#57534e; margin-bottom:8px;">Цим засвідчується, що</p>
-            <h3 id="certDocStudentName" style="font-size:32px; font-weight:800; color:#1e1b4b; text-decoration:underline; text-decoration-color:#b45309; margin-bottom:12px; font-family:inherit;">Студент Студентович</h3>
-            <p style="font-size:14.5px; line-height:1.6; color:#44403c; max-width:580px; margin:0 auto 24px auto;">
-              успішно склав(ла) комплексний сертифікаційний іспит із курсу <br>
-              <b style="color:#0f172a; font-size:16px;">«Масиви в JavaScript»</b><br>
-              із результатом <span id="certDocScoreBadge" style="font-weight:700; color:#047857;">90%</span>.
-            </p>
-
-            <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid #e7e5e4; padding-top:18px; margin-top:28px; font-size:12px; color:#78716c;">
-              <div style="text-align:left;">
-                <div>Номер сертифіката: <span id="certDocId" style="font-family:var(--font-mono); font-weight:700; color:#1c1917;">CERT-2026-X89F</span></div>
-                <div>Дата видачі: <span id="certDocDate">31.10.2026</span></div>
-              </div>
-              <div style="text-align:center;">
-                <div style="width:50px; height:50px; border-radius:50%; border:2px dashed #b45309; display:inline-flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:4px;">🏅</div>
-                <div style="font-size:10px; font-weight:700; text-transform:uppercase; color:#b45309;">ПЕРЕВІРЕНО</div>
-              </div>
-              <div style="text-align:right;">
-                <div style="font-weight:700; color:#1c1917;">Frontend Camp Mentorship</div>
-                <div style="font-size:11px;">Керівник програми</div>
-              </div>
-            </div>
-          </div>
-
-          <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-            <button class="btn-pill btn-pill-primary" id="certPrintDocBtn" style="display:none; padding:10px 22px;">🖨️ Друк / Зберегти як PDF</button>
-            <button class="btn-pill btn-pill-outline" id="certRetryExamBtn" style="padding:10px 22px;">🔄 Скласти ще раз</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  
-          </div>
-        </div>
-      </div>
-
-      <!-- Results & Certificate View -->
-      <div id="certResultsBox" style="display:none; max-width:860px; margin:0 auto;">
-        <div class="mass-runner-box" style="text-align:center;">
-          <div id="certStatusIcon" style="font-size:48px; margin-bottom:8px;">🎉</div>
-          <h2 id="certResultHeadline" style="font-size:26px; font-weight:700; margin-bottom:8px;">Сертифікацію успішно складено!</h2>
-          <p id="certResultSubtext" style="font-size:15px; color:var(--color-graphite, #6e7687); margin-bottom:20px;">
-            Ви успішно розв'язали 9 з 10 завдань (90%).
-          </p>
-
-          <!-- Input student name for certificate -->
-          <div id="certNameInputSection" style="max-width:440px; margin:0 auto 28px auto; text-align:left;">
-            <label style="display:block; font-size:13px; font-weight:700; margin-bottom:6px; color:#374151;">
-              Вкажіть ім'я та прізвище для сертифіката:
-            </label>
-            <div style="display:flex; gap:8px;">
-              <input type="text" id="certStudentNameInput" placeholder="Наприклад: Олена Коваленко" style="flex:1; padding:10px 14px; border-radius:9999px; border:1px solid #000; font-family:inherit; font-size:14px; outline:none;" />
-              <button class="btn-pill btn-pill-primary" id="certApplyNameBtn">Оновити</button>
-            </div>
-          </div>
-
-          <!-- Printable Certificate Document -->
-          <div id="certDocContainer" class="certificate-paper" style="display:none; text-align:center; background:#fffdf8; border:8px double #b45309; border-radius:12px; padding:44px 36px; box-shadow:0 8px 24px rgba(0,0,0,0.08); margin-bottom:24px; position:relative;">
-            <div style="font-size:13px; letter-spacing:0.25em; text-transform:uppercase; color:#b45309; font-weight:700; margin-bottom:6px;">СЕРТИФІКАТ ПРО ОПАНУВАННЯ МОДУЛЯ</div>
-            <div style="font-size:11px; letter-spacing:0.1em; color:#78716c; margin-bottom:20px;">CERTIFICATE OF ACHIEVEMENT</div>
-            
-            <p style="font-size:14px; color:#57534e; margin-bottom:8px;">Цим засвідчується, що</p>
-            <h3 id="certDocStudentName" style="font-size:32px; font-weight:800; color:#1e1b4b; text-decoration:underline; text-decoration-color:#b45309; margin-bottom:12px; font-family:inherit;">Студент Студентович</h3>
-            <p style="font-size:14.5px; line-height:1.6; color:#44403c; max-width:580px; margin:0 auto 24px auto;">
-              успішно склав(ла) комплексний сертифікаційний іспит із курсу <br>
-              <b style="color:#0f172a; font-size:16px;">«Масиви в JavaScript»</b><br>
-              із результатом <span id="certDocScoreBadge" style="font-weight:700; color:#047857;">90%</span>.
-            </p>
-
-            <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid #e7e5e4; padding-top:18px; margin-top:28px; font-size:12px; color:#78716c;">
-              <div style="text-align:left;">
-                <div>Номер сертифіката: <span id="certDocId" style="font-family:var(--font-mono); font-weight:700; color:#1c1917;">CERT-2026-X89F</span></div>
-                <div>Дата видачі: <span id="certDocDate">31.10.2026</span></div>
-              </div>
-              <div style="text-align:center;">
-                <div style="width:50px; height:50px; border-radius:50%; border:2px dashed #b45309; display:inline-flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:4px;">🏅</div>
-                <div style="font-size:10px; font-weight:700; text-transform:uppercase; color:#b45309;">ПЕРЕВІРЕНО</div>
-              </div>
-              <div style="text-align:right;">
-                <div style="font-weight:700; color:#1c1917;">Frontend Camp Mentorship</div>
-                <div style="font-size:11px;">Керівник програми</div>
-              </div>
-            </div>
-          </div>
-
-          <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-            <button class="btn-pill btn-pill-primary" id="certPrintDocBtn" style="display:none; padding:10px 22px;">🖨️ Друк / Зберегти як PDF</button>
-            <button class="btn-pill btn-pill-outline" id="certRetryExamBtn" style="padding:10px 22px;">🔄 Скласти ще раз</button>
-          </div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:13px;" id="teacherExamRecordsTable">
+            <thead>
+              <tr style="border-bottom:1px solid rgba(125,125,125,0.2); color:var(--color-graphite, #9ba1b0); text-align:left;">
+                <th style="padding:8px 10px;">Дата</th>
+                <th style="padding:8px 10px;">Студент</th>
+                <th style="padding:8px 10px; text-align:center;">Бал</th>
+                <th style="padding:8px 10px; text-align:center;">Час</th>
+                <th style="padding:8px 10px; text-align:center;">Статус</th>
+                <th style="padding:8px 10px; text-align:right;">Дії</th>
+              </tr>
+            </thead>
+            <tbody id="teacherExamRecordsBody">
+              <tr>
+                <td colspan="6" style="padding:20px; text-align:center; color:#9ba1b0;">Записів сертифікацій ще немає. Коли студенти складають тест, дані з'являються тут автоматично.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -2481,8 +2469,6 @@ function checkMainDiagonal(board) {
       const teacherGuideBox = document.getElementById('teacherGuideBox');
       if (teacherGuideBox) {
         teacherGuideBox.style.display = isUnlocked ? 'block' : 'none';
-      const teacherAnalyticsBox = document.getElementById('teacherAnalyticsBox');
-      if (teacherAnalyticsBox) teacherAnalyticsBox.style.display = isUnlocked ? 'block' : 'none';
         if (isUnlocked && decryptedSolutionsCache && currentTask) {
           renderTeacherGuide(currentTask.id);
         }
@@ -2831,28 +2817,98 @@ function checkMainDiagonal(board) {
         }
       });
 
+      // Ensure blur overlay is attached to document.body root
+      const overlayEl = document.getElementById('certBlurOverlay');
+      if (overlayEl && overlayEl.parentElement !== document.body) {
+        document.body.appendChild(overlayEl);
+      }
+
       // Focus & blur protection during active exam
-      function handleExamBlur() {
+      let certInfractionsCount = 0;
+      function handleExamBlur(reasonText) {
         if (!certActive) return;
+        certInfractionsCount++;
         const overlay = document.getElementById('certBlurOverlay');
+        const notice = document.getElementById('certInfractionNotice');
+        if (notice) {
+          notice.textContent = reasonText 
+            ? `${reasonText} (Порушень: ${certInfractionsCount})`
+            : `Увага: втрату фокусу вікна зафіксовано античитом (${certInfractionsCount} разів). Усі перемикання записуються у звіт викладача.`;
+        }
         if (overlay) overlay.style.display = 'flex';
+        const mainWrap = document.querySelector('.app-container, .workout-container, .container, body > div');
+        if (mainWrap) mainWrap.style.filter = 'blur(16px)';
       }
 
       function handleExamFocus() {
         const overlay = document.getElementById('certBlurOverlay');
         if (overlay) overlay.style.display = 'none';
+        const mainWrap = document.querySelector('.app-container, .workout-container, .container, body > div');
+        if (mainWrap) mainWrap.style.filter = 'none';
+        window.focus();
       }
 
-      window.addEventListener('blur', handleExamBlur);
+      window.addEventListener('blur', () => {
+        if (certActive) handleExamBlur('⚠️ Втрату фокусу вікна (перемикання додатку або робочого столу) зафіксовано!');
+      });
+
       document.addEventListener('visibilitychange', () => {
         if (document.hidden && certActive) {
-          handleExamBlur();
+          handleExamBlur('⚠️ Перехід на іншу вкладку браузера зафіксовано античитом!');
+        }
+      });
+
+      // Navigation Lock during active exam
+      const allTabBtns = document.querySelectorAll('.tab-btn, .nav-btn, [data-tab]');
+      allTabBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          if (certActive && btn.dataset?.tab !== 'final-cert') {
+            e.preventDefault();
+            e.stopPropagation();
+            handleExamBlur('⚠️ Навігацію заблоковано! Під час сертифікаційного іспиту заборонено відкривати теорію та тренажер.');
+          }
+        }, true);
+      });
+
+      // Anti-Copypaste in exam editor
+      const certEditor = document.getElementById('certCodeEditor');
+      if (certEditor) {
+        certEditor.addEventListener('paste', (e) => {
+          if (certActive) {
+            e.preventDefault();
+            handleExamBlur('⚠️ Вставку коду (Paste) заблоковано! На сертифікаційному іспиті заборонено вставляти скопійований код. Пишіть розвʼязок власноруч.');
+          }
+        });
+        certEditor.addEventListener('contextmenu', (e) => {
+          if (certActive) {
+            e.preventDefault();
+          }
+        });
+      }
+
+      // Hotkeys Lock (Ctrl+V / Cmd+V, Ctrl+C / Cmd+C)
+      document.addEventListener('keydown', (e) => {
+        if (!certActive) return;
+        const isMod = e.ctrlKey || e.metaKey;
+        if (isMod && (e.key === 'v' || e.key === 'V')) {
+          e.preventDefault();
+          handleExamBlur('⚠️ Вставку коду через комбінацію клавіш заблоковано античитом!');
+        }
+        if (isMod && (e.key === 'c' || e.key === 'C')) {
+          e.preventDefault();
+          handleExamBlur('⚠️ Копіювання коду та матеріалів іспиту заблоковано античитом!');
+        }
+      });
+
+      document.addEventListener('copy', (e) => {
+        if (certActive) {
+          e.preventDefault();
+          handleExamBlur('⚠️ Спробу копіювання тексту заблоковано античитом!');
         }
       });
 
       document.getElementById('resumeCertFocusBtn')?.addEventListener('click', () => {
         handleExamFocus();
-        window.focus();
       });
 
       // Mentor analytics actions
@@ -3081,6 +3137,8 @@ function checkMainDiagonal(board) {
       certActive = false;
       const blurEl = document.getElementById('certBlurOverlay');
       if (blurEl) blurEl.style.display = 'none';
+      const mainWrap = document.querySelector('.app-container, .workout-container, .container, body > div');
+      if (mainWrap) mainWrap.style.filter = 'none';
 
       // Record final task time
       if (certTaskStartTimestamp > 0) {
@@ -3288,49 +3346,632 @@ function checkMainDiagonal(board) {
 
     // Call init
     initCertificationModule();
+  
 
+    
     // ==========================================
-    // ANTI-COPY & SHORTCUT INTEGRITY CONTROLLER
+    // FINAL CERTIFICATION EXAM CONTROLLER (WITH TIMING & ANALYTICS)
     // ==========================================
-    document.addEventListener('contextmenu', (e) => {
-      if (e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT') {
-        e.preventDefault();
+    let certActive = false;
+    let certExamTasks = [];
+    let certCurrentIdx = 0;
+    const certUserCodes = {};
+    const certPassedMap = {};
+    let certTimerInterval = null;
+    let certSecondsLeft = 45 * 60; // 45 mins
+    let certStudentName = localStorage.getItem('camp_student_name') || 'Студент Курсу';
+
+    // Timing tracking per task
+    let certExamStartTime = 0;
+    let certTaskStartTimestamp = 0;
+    let certTaskTimeSpent = new Array(10).fill(0);
+
+    function formatDuration(sec) {
+      const s = Math.max(0, Math.round(sec));
+      const m = Math.floor(s / 60);
+      const rem = s % 60;
+      if (m === 0) return `${rem} с`;
+      return `${m} хв ${String(rem).padStart(2, '0')} с`;
+    }
+
+    function initCertificationModule() {
+      const startBtn = document.getElementById('startCertExamBtn');
+      if (startBtn) {
+        startBtn.addEventListener('click', () => startCertificationExam());
       }
-    });
 
-    document.addEventListener('copy', (e) => {
-      if (e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT') {
-        e.preventDefault();
-        if (typeof showToast === 'function') {
-          showToast('⚠️ Копіювання матеріалів курсу захищено авторським правом');
+      document.getElementById('certPrevBtn')?.addEventListener('click', () => {
+        if (certCurrentIdx > 0) selectCertExamTask(certCurrentIdx - 1);
+      });
+
+      document.getElementById('certNextBtn')?.addEventListener('click', () => {
+        if (certCurrentIdx < certExamTasks.length - 1) selectCertExamTask(certCurrentIdx + 1);
+      });
+
+      document.getElementById('certRunTestBtn')?.addEventListener('click', runCertSingleTaskTest);
+      document.getElementById('finishCertEarlyBtn')?.addEventListener('click', () => {
+        if (confirm('Ви впевнені, що бажаєте завершити іспит достроково?')) {
+          finishCertificationExam();
+        }
+      });
+
+      document.getElementById('certRetryExamBtn')?.addEventListener('click', () => {
+        startCertificationExam();
+      });
+
+      document.getElementById('certApplyNameBtn')?.addEventListener('click', () => {
+        const input = document.getElementById('certStudentNameInput');
+        const name = input ? input.value.trim() : '';
+        if (name) {
+          certStudentName = name;
+          localStorage.setItem('camp_student_name', name);
+          const nameEl = document.getElementById('certDocStudentName');
+          if (nameEl) nameEl.textContent = name;
+          showToast('Ім\'я в сертифікаті оновлено!');
+        }
+      });
+
+      document.getElementById('certPrintDocBtn')?.addEventListener('click', () => {
+        window.print();
+      });
+
+      document.getElementById('certResetTaskBtn')?.addEventListener('click', () => {
+        if (confirm('Скинути код поточного екзаменаційного завдання?')) {
+          const task = certExamTasks[certCurrentIdx];
+          delete certUserCodes[task.id];
+          document.getElementById('certCodeEditor').value = `export function ${task.name}(${task.starterParams}) {\n  // TODO: Напишіть вашу реалізацію тут\n  ${task.starterBody}\n}`;
+          showToast('Код завдання скинуто.');
+        }
+      });
+
+      document.getElementById('certFormatBtn')?.addEventListener('click', async () => {
+        const editor = document.getElementById('certCodeEditor');
+        if (!editor || !window.prettier || !window.prettierPlugins?.babel) return;
+        try {
+          const plugins = [window.prettierPlugins.babel];
+          if (window.prettierPlugins.estree) plugins.push(window.prettierPlugins.estree);
+          editor.value = await window.prettier.format(editor.value, {
+            parser: 'babel',
+            plugins,
+            semi: true,
+            singleQuote: true,
+            tabWidth: 2
+          });
+          showToast('✨ Відформатовано!');
+        } catch (e) {
+          showToast('Помилка форматування: ' + e.message);
+        }
+      });
+
+      // Ensure blur overlay is attached to document.body root
+      const overlayEl = document.getElementById('certBlurOverlay');
+      if (overlayEl && overlayEl.parentElement !== document.body) {
+        document.body.appendChild(overlayEl);
+      }
+
+      // Focus & blur protection during active exam
+      let certInfractionsCount = 0;
+      function handleExamBlur(reasonText) {
+        if (!certActive) return;
+        certInfractionsCount++;
+        const overlay = document.getElementById('certBlurOverlay');
+        const notice = document.getElementById('certInfractionNotice');
+        if (notice) {
+          notice.textContent = reasonText 
+            ? `${reasonText} (Порушень: ${certInfractionsCount})`
+            : `Увага: втрату фокусу вікна зафіксовано античитом (${certInfractionsCount} разів). Усі перемикання записуються у звіт викладача.`;
+        }
+        if (overlay) overlay.style.display = 'flex';
+        const mainWrap = document.querySelector('.app-container, .workout-container, .container, body > div');
+        if (mainWrap) mainWrap.style.filter = 'blur(16px)';
+      }
+
+      function handleExamFocus() {
+        const overlay = document.getElementById('certBlurOverlay');
+        if (overlay) overlay.style.display = 'none';
+        const mainWrap = document.querySelector('.app-container, .workout-container, .container, body > div');
+        if (mainWrap) mainWrap.style.filter = 'none';
+        window.focus();
+      }
+
+      window.addEventListener('blur', () => {
+        if (certActive) handleExamBlur('⚠️ Втрату фокусу вікна (перемикання додатку або робочого столу) зафіксовано!');
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden && certActive) {
+          handleExamBlur('⚠️ Перехід на іншу вкладку браузера зафіксовано античитом!');
+        }
+      });
+
+      // Navigation Lock during active exam
+      const allTabBtns = document.querySelectorAll('.tab-btn, .nav-btn, [data-tab]');
+      allTabBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          if (certActive && btn.dataset?.tab !== 'final-cert') {
+            e.preventDefault();
+            e.stopPropagation();
+            handleExamBlur('⚠️ Навігацію заблоковано! Під час сертифікаційного іспиту заборонено відкривати теорію та тренажер.');
+          }
+        }, true);
+      });
+
+      // Anti-Copypaste in exam editor
+      const certEditor = document.getElementById('certCodeEditor');
+      if (certEditor) {
+        certEditor.addEventListener('paste', (e) => {
+          if (certActive) {
+            e.preventDefault();
+            handleExamBlur('⚠️ Вставку коду (Paste) заблоковано! На сертифікаційному іспиті заборонено вставляти скопійований код. Пишіть розвʼязок власноруч.');
+          }
+        });
+        certEditor.addEventListener('contextmenu', (e) => {
+          if (certActive) {
+            e.preventDefault();
+          }
+        });
+      }
+
+      // Hotkeys Lock (Ctrl+V / Cmd+V, Ctrl+C / Cmd+C)
+      document.addEventListener('keydown', (e) => {
+        if (!certActive) return;
+        const isMod = e.ctrlKey || e.metaKey;
+        if (isMod && (e.key === 'v' || e.key === 'V')) {
+          e.preventDefault();
+          handleExamBlur('⚠️ Вставку коду через комбінацію клавіш заблоковано античитом!');
+        }
+        if (isMod && (e.key === 'c' || e.key === 'C')) {
+          e.preventDefault();
+          handleExamBlur('⚠️ Копіювання коду та матеріалів іспиту заблоковано античитом!');
+        }
+      });
+
+      document.addEventListener('copy', (e) => {
+        if (certActive) {
+          e.preventDefault();
+          handleExamBlur('⚠️ Спробу копіювання тексту заблоковано античитом!');
+        }
+      });
+
+      document.getElementById('resumeCertFocusBtn')?.addEventListener('click', () => {
+        handleExamFocus();
+      });
+
+      // Mentor analytics actions
+      document.getElementById('exportExamCsvBtn')?.addEventListener('click', exportExamRecordsCsv);
+      document.getElementById('clearExamLogBtn')?.addEventListener('click', () => {
+        if (confirm('Ви дійсно бажаєте очистити журнал сертифікацій?')) {
+          localStorage.removeItem('camp_exam_records');
+          renderTeacherExamAnalytics();
+          showToast('Журнал сертифікацій очищено.');
+        }
+      });
+
+      // Render initial analytics if teacher mode is active
+      renderTeacherExamAnalytics();
+    }
+
+    function startCertificationExam() {
+      // Pick 10 balanced random tasks across modules
+      certExamTasks = [];
+      const shuffledModules = [...MODULES].sort(() => Math.random() - 0.5);
+      for (const mod of shuffledModules) {
+        const mTasks = ALL_TASKS.filter(t => t.moduleIdx === mod.idx);
+        if (mTasks.length > 0) {
+          const chosen = mTasks[Math.floor(Math.random() * mTasks.length)];
+          if (!certExamTasks.some(t => t.id === chosen.id)) {
+            certExamTasks.push(chosen);
+          }
+        }
+        if (certExamTasks.length === 10) break;
+      }
+      while (certExamTasks.length < 10 && certExamTasks.length < ALL_TASKS.length) {
+        const chosen = ALL_TASKS[Math.floor(Math.random() * ALL_TASKS.length)];
+        if (!certExamTasks.some(t => t.id === chosen.id)) {
+          certExamTasks.push(chosen);
         }
       }
-    });
 
-    document.addEventListener('keydown', (e) => {
-      const isInput = e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT';
-      const isMod = e.ctrlKey || e.metaKey;
-      if (isMod && (e.key === 'c' || e.key === 'C') && !isInput) {
-        e.preventDefault();
-        if (typeof showToast === 'function') {
-          showToast('⚠️ Копіювання матеріалів курсу вимкнено');
+      certCurrentIdx = 0;
+      Object.keys(certUserCodes).forEach(k => delete certUserCodes[k]);
+      Object.keys(certPassedMap).forEach(k => delete certPassedMap[k]);
+      certSecondsLeft = 45 * 60;
+      certActive = true;
+
+      // Start timing
+      certExamStartTime = Date.now();
+      certTaskStartTimestamp = Date.now();
+      certTaskTimeSpent = new Array(10).fill(0);
+
+      document.getElementById('certWelcomeBox').style.display = 'none';
+      document.getElementById('certResultsBox').style.display = 'none';
+      document.getElementById('certActiveBox').style.display = 'block';
+
+      renderCertExamPills();
+      selectCertExamTask(0);
+      startCertTimer();
+      showToast('🚀 Сертифікаційний іспит розпочато! Успіхів!');
+    }
+
+    function startCertTimer() {
+      if (certTimerInterval) clearInterval(certTimerInterval);
+      updateCertTimerDisplay();
+      certTimerInterval = setInterval(() => {
+        certSecondsLeft--;
+        if (certSecondsLeft <= 0) {
+          clearInterval(certTimerInterval);
+          alert('Час екзамену вичерпано!');
+          finishCertificationExam();
+        } else {
+          updateCertTimerDisplay();
+        }
+      }, 1000);
+    }
+
+    function updateCertTimerDisplay() {
+      const el = document.getElementById('certTimerDisplay');
+      if (!el) return;
+      const mins = Math.floor(certSecondsLeft / 60);
+      const secs = certSecondsLeft % 60;
+      el.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      if (certSecondsLeft < 300) {
+        el.style.color = '#ef4444';
+        el.style.background = '#fef2f2';
+      }
+    }
+
+    function renderCertExamPills() {
+      const container = document.getElementById('certQuestionPills');
+      if (!container) return;
+      container.innerHTML = '';
+      certExamTasks.forEach((t, i) => {
+        const btn = document.createElement('button');
+        const isCur = i === certCurrentIdx;
+        const isPassed = certPassedMap[i] === true;
+        const isFailed = certPassedMap[i] === false;
+
+        btn.className = 'btn-pill ' + (isCur ? 'btn-pill-primary' : 'btn-pill-outline');
+        btn.style.padding = '3px 10px';
+        btn.style.fontSize = '12px';
+        btn.textContent = (isPassed ? '✓ ' : '') + (i + 1);
+
+        if (isPassed && !isCur) {
+          btn.style.borderColor = '#10b981';
+          btn.style.color = '#047857';
+          btn.style.background = 'rgba(16, 185, 129, 0.1)';
+        } else if (isFailed && !isCur) {
+          btn.style.borderColor = '#ef4444';
+          btn.style.color = '#b91c1c';
+          btn.style.background = 'rgba(239, 68, 68, 0.1)';
+        }
+
+        btn.addEventListener('click', () => selectCertExamTask(i));
+        container.appendChild(btn);
+      });
+    }
+
+    function selectCertExamTask(idx) {
+      // Record elapsed time on previous task
+      if (certActive && certTaskStartTimestamp > 0) {
+        const elapsed = Math.round((Date.now() - certTaskStartTimestamp) / 1000);
+        certTaskTimeSpent[certCurrentIdx] = (certTaskTimeSpent[certCurrentIdx] || 0) + elapsed;
+      }
+      certCurrentIdx = idx;
+      certTaskStartTimestamp = Date.now();
+
+      const task = certExamTasks[idx];
+
+      document.getElementById('certTaskIdBadge').textContent = `Завдання ${idx + 1} / 10 (${task.id})`;
+      document.getElementById('certTaskTitle').textContent = task.name + ' — ' + task.title;
+      document.getElementById('certTaskLevelBadge').textContent = task.level;
+      document.getElementById('certTaskGoal').textContent = task.goal;
+      document.getElementById('certTaskReqs').innerHTML = task.reqs.map(r => `<li>${r}</li>`).join('');
+      document.getElementById('certEditorFilename').textContent = `exam-${task.id}.js`;
+
+      const editor = document.getElementById('certCodeEditor');
+      if (certUserCodes[task.id]) {
+        editor.value = certUserCodes[task.id];
+      } else {
+        editor.value = `export function ${task.name}(${task.starterParams}) {\n  // TODO: Напишіть вашу реалізацію тут\n  ${task.starterBody}\n}`;
+      }
+
+      const consoleBody = document.getElementById('certConsoleBody');
+      const testStatus = document.getElementById('certTestStatus');
+      consoleBody.innerHTML = '<div style="color:#9ba1b0;">Натисніть "Перевірити завдання" для запуску тестів.</div>';
+      testStatus.textContent = certPassedMap[idx] ? 'Пройдено' : 'Очікує запуску';
+      testStatus.style.color = certPassedMap[idx] ? '#10b981' : '#9ba1b0';
+
+      renderCertExamPills();
+    }
+
+    function runCertSingleTaskTest() {
+      const task = certExamTasks[certCurrentIdx];
+      const editor = document.getElementById('certCodeEditor');
+      const code = editor.value;
+      certUserCodes[task.id] = code;
+
+      const consoleBody = document.getElementById('certConsoleBody');
+      const testStatus = document.getElementById('certTestStatus');
+      consoleBody.innerHTML = '';
+      let passedAll = true;
+
+      try {
+        const clean = code.replace(/export\s+default\s+/g, '').replace(/export\s+/g, '');
+        const fnRunner = new Function(clean + `\nreturn ${task.name};`);
+        const userFn = fnRunner();
+
+        task.tests.forEach(tc => {
+          const row = document.createElement('div');
+          row.className = 'test-result-row';
+          try {
+            const runner = new Function(task.name, 'return ' + tc.expr);
+            const actual = runner(userFn);
+            const isMatch = JSON.stringify(actual) === JSON.stringify(tc.expected);
+            if (isMatch) {
+              row.innerHTML = `
+                <span class="test-status-pill status-pass">PASS</span>
+                <div>
+                  <span style="color:#d1d5db;">${tc.expr}</span>
+                  <div style="font-size:11px; color:#10b981;">Результат: ${JSON.stringify(actual)}</div>
+                </div>
+              `;
+            } else {
+              passedAll = false;
+              row.innerHTML = `
+                <span class="test-status-pill status-fail">FAIL</span>
+                <div>
+                  <span style="color:#f87171;">${tc.expr}</span>
+                  <div style="font-size:11px; color:#a8a29a;">Очікувалось: <span style="color:#34d399;">${JSON.stringify(tc.expected)}</span></div>
+                  <div style="font-size:11px; color:#f87171;">Отримано: <span>${JSON.stringify(actual)}</span></div>
+                </div>
+              `;
+            }
+          } catch (tErr) {
+            passedAll = false;
+            row.innerHTML = `
+              <span class="test-status-pill status-fail">ERROR</span>
+              <div>
+                <span style="color:#f87171;">${tc.expr}</span>
+                <div style="font-size:11px; color:#ef4444;">Помилка: ${tErr.message}</div>
+              </div>
+            `;
+          }
+          consoleBody.appendChild(row);
+        });
+
+        certPassedMap[certCurrentIdx] = passedAll;
+        testStatus.textContent = passedAll ? 'Усі тести пройдено!' : 'Помилки в тестах';
+        testStatus.style.color = passedAll ? '#10b981' : '#ef4444';
+        renderCertExamPills();
+
+        if (passedAll) {
+          showToast(`✓ Завдання ${certCurrentIdx + 1} успішно зараховано!`);
+        } else {
+          showToast(`❌ Завдання ${certCurrentIdx + 1}: деякі тести не пройшли.`);
+        }
+      } catch (err) {
+        certPassedMap[certCurrentIdx] = false;
+        testStatus.textContent = 'Синтаксична помилка';
+        testStatus.style.color = '#ef4444';
+        consoleBody.innerHTML = `<div style="color:#ef4444;">Помилка: ${err.message}</div>`;
+        renderCertExamPills();
+      }
+    }
+
+    function finishCertificationExam() {
+      if (certTimerInterval) clearInterval(certTimerInterval);
+      certActive = false;
+      const blurEl = document.getElementById('certBlurOverlay');
+      if (blurEl) blurEl.style.display = 'none';
+      const mainWrap = document.querySelector('.app-container, .workout-container, .container, body > div');
+      if (mainWrap) mainWrap.style.filter = 'none';
+
+      // Record final task time
+      if (certTaskStartTimestamp > 0) {
+        const elapsed = Math.round((Date.now() - certTaskStartTimestamp) / 1000);
+        certTaskTimeSpent[certCurrentIdx] = (certTaskTimeSpent[certCurrentIdx] || 0) + elapsed;
+      }
+      const totalElapsedSeconds = Math.max(1, Math.round((Date.now() - certExamStartTime) / 1000));
+
+      let passedCount = 0;
+      for (let i = 0; i < certExamTasks.length; i++) {
+        if (certPassedMap[i] === true) passedCount++;
+      }
+
+      const percent = Math.round((passedCount / certExamTasks.length) * 100);
+      const isCertified = passedCount >= 8;
+
+      document.getElementById('certActiveBox').style.display = 'none';
+      const resultsBox = document.getElementById('certResultsBox');
+      resultsBox.style.display = 'block';
+
+      const icon = document.getElementById('certStatusIcon');
+      const headline = document.getElementById('certResultHeadline');
+      const subtext = document.getElementById('certResultSubtext');
+      const doc = document.getElementById('certDocContainer');
+      const printBtn = document.getElementById('certPrintDocBtn');
+      const nameInputSec = document.getElementById('certNameInputSection');
+
+      if (isCertified) {
+        icon.textContent = '🎉';
+        headline.textContent = 'Вітаємо! Сертифікаційний екзамен успішно складено!';
+        subtext.innerHTML = `Ваш результат: <b>${passedCount} з 10 завдань (${percent}%)</b>. Ви продемонстрували високий рівень володіння матеріалом!`;
+        nameInputSec.style.display = 'block';
+        doc.style.display = 'block';
+        printBtn.style.display = 'inline-flex';
+
+        // Fill document
+        const studentNameInput = document.getElementById('certStudentNameInput');
+        if (studentNameInput) studentNameInput.value = certStudentName;
+        document.getElementById('certDocStudentName').textContent = certStudentName;
+        document.getElementById('certDocScoreBadge').textContent = `${percent}% (${passedCount}/10)`;
+        
+        const randomHex = Math.random().toString(16).substring(2, 8).toUpperCase();
+        document.getElementById('certDocId').textContent = `${'CERT-ARRAYS-2026'}-${randomHex}`;
+        document.getElementById('certDocDate').textContent = new Date().toLocaleDateString('uk-UA');
+      } else {
+        icon.textContent = '📚';
+        headline.textContent = 'Сертифікаційний поріг не подолано';
+        subtext.innerHTML = `Ваш результат: <b>${passedCount} з 10 завдань (${percent}%)</b>. Для отримання сертифіката потрібно набрати щонайменше 8 із 10 (80%). Рекомендуємо повторити теми та спробувати знову.`;
+        nameInputSec.style.display = 'none';
+        doc.style.display = 'none';
+        printBtn.style.display = 'none';
+      }
+
+      // Populate Student Performance Breakdown Table (Variant A)
+      const tableBody = document.getElementById('certStudentTableBody');
+      if (tableBody) {
+        tableBody.innerHTML = '';
+        certExamTasks.forEach((t, i) => {
+          const row = document.createElement('tr');
+          row.style.borderBottom = '1px solid rgba(125,125,125,0.15)';
+          const isPass = certPassedMap[i] === true;
+          const timeStr = formatDuration(certTaskTimeSpent[i] || 0);
+
+          row.innerHTML = `
+            <td style="padding:10px 8px; font-weight:700;">${i + 1}</td>
+            <td style="padding:10px 8px;">
+              <div style="font-weight:600;">${t.name}</div>
+              <div style="font-size:11.5px; color:var(--color-graphite, #9ba1b0);">${t.title} (${t.id})</div>
+            </td>
+            <td style="padding:10px 8px; font-size:12px;">${t.level}</td>
+            <td style="padding:10px 8px; text-align:center;">${t.tests.length}/${t.tests.length}</td>
+            <td style="padding:10px 8px; text-align:center; font-family:var(--font-mono); font-weight:600;">${timeStr}</td>
+            <td style="padding:10px 8px; text-align:right;">
+              <span class="test-status-pill ${isPass ? 'status-pass' : 'status-fail'}">${isPass ? 'PASS' : 'FAIL'}</span>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+
+        const totalTimeBadge = document.getElementById('certTotalTimeBadge');
+        if (totalTimeBadge) {
+          totalTimeBadge.textContent = `⏱️ Загальний час: ${formatDuration(totalElapsedSeconds)} з 45:00`;
         }
       }
-      if (isMod && (e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S')) {
-        e.preventDefault();
-      }
-      // Never block Ctrl+Shift+A (mentor secret hotkey)
-      if (isMod && !e.shiftKey && (e.key === 'a' || e.key === 'A') && !isInput) {
-        e.preventDefault();
-      }
-    });
 
-    document.addEventListener('dragstart', (e) => {
-      if (e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT') {
-        e.preventDefault();
-      }
-    });
+      // Record exam attempt for mentor analytics (Variant B)
+      const examRecord = {
+        id: 'EXAM-' + Math.random().toString(36).substring(2, 8).toUpperCase(),
+        date: new Date().toLocaleString('uk-UA'),
+        studentName: certStudentName,
+        courseTitle: 'Масиви в JavaScript',
+        passedCount,
+        totalTasks: certExamTasks.length,
+        percent,
+        isCertified,
+        totalElapsedSeconds,
+        tasks: certExamTasks.map((t, idx) => ({
+          id: t.id,
+          name: t.name,
+          title: t.title,
+          passed: certPassedMap[idx] === true,
+          timeSpent: certTaskTimeSpent[idx] || 0
+        }))
+      };
 
+      try {
+        const records = JSON.parse(localStorage.getItem('camp_exam_records') || '[]');
+        records.unshift(examRecord);
+        localStorage.setItem('camp_exam_records', JSON.stringify(records.slice(0, 50)));
+
+        // Broadcast to mentor channel if Supabase is active
+        if (window.campRealtimePresence) {
+          window.campRealtimePresence.send({
+            type: 'broadcast',
+            event: 'exam_completed',
+            payload: examRecord
+          });
+        }
+      } catch (e) {
+        console.warn('Could not save exam record:', e);
+      }
+
+      renderTeacherExamAnalytics();
+    }
+
+    // Mentor Analytics View (Variant B)
+    function renderTeacherExamAnalytics() {
+      const tbody = document.getElementById('teacherExamRecordsBody');
+      if (!tbody) return;
+
+      const records = JSON.parse(localStorage.getItem('camp_exam_records') || '[]');
+      if (records.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="padding:20px; text-align:center; color:#9ba1b0;">Записів сертифікацій ще немає.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = '';
+      records.forEach((rec, idx) => {
+        const row = document.createElement('tr');
+        row.style.borderBottom = '1px solid rgba(125,125,125,0.15)';
+        row.innerHTML = `
+          <td style="padding:10px 8px; font-size:12px; color:var(--color-graphite, #9ba1b0);">${rec.date}</td>
+          <td style="padding:10px 8px; font-weight:600;">${rec.studentName}</td>
+          <td style="padding:10px 8px; text-align:center; font-weight:700;">${rec.passedCount}/${rec.totalTasks} (${rec.percent}%)</td>
+          <td style="padding:10px 8px; text-align:center; font-family:var(--font-mono);">${formatDuration(rec.totalElapsedSeconds)}</td>
+          <td style="padding:10px 8px; text-align:center;">
+            <span class="test-status-pill ${rec.isCertified ? 'status-pass' : 'status-fail'}" style="font-size:11px;">
+              ${rec.isCertified ? 'Складено' : 'Не складено'}
+            </span>
+          </td>
+          <td style="padding:10px 8px; text-align:right;">
+            <button class="btn-pill btn-pill-outline" onclick="toggleExamDetailRow(${idx})" style="padding:3px 8px; font-size:11px;">Деталі ▾</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+
+        // Expandable Detail Row
+        const detailRow = document.createElement('tr');
+        detailRow.id = `examDetailRow_${idx}`;
+        detailRow.style.display = 'none';
+        detailRow.style.background = 'rgba(0,0,0,0.03)';
+        detailRow.innerHTML = `
+          <td colspan="6" style="padding:12px 16px;">
+            <div style="font-size:12px; font-weight:700; margin-bottom:8px; color:var(--color-graphite, #9ba1b0);">Хронометраж завдань тесту:</div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:8px;">
+              ${(rec.tasks || []).map((t, ti) => `
+                <div style="padding:6px 10px; border-radius:6px; background:rgba(125,125,125,0.08); font-size:11.5px; display:flex; justify-content:space-between; align-items:center;">
+                  <span><b>#${ti + 1}</b> ${t.name}</span>
+                  <span style="font-family:var(--font-mono); color:${t.passed ? '#10b981' : '#ef4444'}; font-weight:600;">${formatDuration(t.timeSpent)}</span>
+                </div>
+              `).join('')}
+            </div>
+          </td>
+        `;
+        tbody.appendChild(detailRow);
+      });
+    }
+
+    window.toggleExamDetailRow = function(idx) {
+      const el = document.getElementById(`examDetailRow_${idx}`);
+      if (el) {
+        el.style.display = el.style.display === 'none' ? 'table-row' : 'none';
+      }
+    };
+
+    function exportExamRecordsCsv() {
+      const records = JSON.parse(localStorage.getItem('camp_exam_records') || '[]');
+      if (!records.length) {
+        showToast('Журнал порожній, немає даних для експорту.');
+        return;
+      }
+      let csv = 'ID,Дата,Студент,Курс,Бали,Відсоток,Статус,Час (сек),Загальний час\n';
+      records.forEach(r => {
+        csv += `"${r.id}","${r.date}","${r.studentName.replace(/"/g, '""')}","${r.courseTitle}",${r.passedCount}/${r.totalTasks},${r.percent}%,${r.isCertified ? 'Сертифіковано' : 'Не подолано'},${r.totalElapsedSeconds},"${formatDuration(r.totalElapsedSeconds)}"\n`;
+      });
+      const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `exam-results-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('📥 CSV-файл з оцінками завантажено!');
+    }
+
+    // Call init
+    initCertificationModule();
   
 
     // Initial render
