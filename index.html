@@ -1509,6 +1509,9 @@
         <div class="pill-badge" id="progressPill">
           🏆 <span id="progressCount">0</span> / 165 виконано
         </div>
+        <div class="pill-badge" id="cloudProgressPill" style="display:none;" title="Загальний прогрес із хмари; список конкретних виконаних завдань не відновлюється." aria-live="polite">
+          ☁️ Хмарний прогрес: <span id="cloudProgressCount">0 / 165 (0%)</span>
+        </div>
 
         <!-- Header GitHub Auth -->
         <button id="headerGithubLoginBtn" class="btn-pill btn-pill-outline" style="display:inline-flex; align-items:center; gap:6px; padding:6px 14px; font-size:12.5px; cursor:pointer;" title="Увійти через GitHub для синхронізації прогресу">
@@ -3264,15 +3267,25 @@ function checkMainDiagonal(board) {
     }
 
     let syncProgressTimer = null;
+    let cloudProgressLoadedLogin = null;
+    let cloudProgressSolvedCount = 0;
+    let pendingCloudProgressSync = false;
+
     function syncStudentProgressToCloud(moduleKey = 'arrays') {
       const user = getSavedGitHubUser();
       const studentName = user?.name || localStorage.getItem('camp_student_name') || 'Студент';
       const githubLogin = user?.login || null;
       if (!githubLogin && !localStorage.getItem('camp_student_name')) return;
 
+      if (githubLogin && cloudProgressLoadedLogin !== githubLogin.toLowerCase()) {
+        pendingCloudProgressSync = true;
+        return;
+      }
+
       clearTimeout(syncProgressTimer);
       syncProgressTimer = setTimeout(async () => {
         try {
+          const solvedCount = Math.max(completedTasks.size, githubLogin ? cloudProgressSolvedCount : 0);
           await fetch('https://loops-github-auth.ivan-grabovsky-ua.workers.dev/api/progress-sync', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -3281,13 +3294,66 @@ function checkMainDiagonal(board) {
               studentName: studentName,
               avatarUrl: user?.avatar_url || (githubLogin ? `https://github.com/${githubLogin}.png` : null),
               module: moduleKey,
-              solvedCount: completedTasks.size,
+              solvedCount: solvedCount,
               totalTasks: ALL_TASKS.length,
-              percent: ALL_TASKS.length ? Math.round((completedTasks.size / ALL_TASKS.length) * 100) : 0
+              percent: ALL_TASKS.length ? Math.round((solvedCount / ALL_TASKS.length) * 100) : 0
             })
           });
         } catch (_) {}
       }, 800);
+    }
+
+    async function loadStudentCloudProgress(user) {
+      const badge = document.getElementById('cloudProgressPill');
+      const count = document.getElementById('cloudProgressCount');
+      const githubLogin = user?.login;
+      if (!badge || !count || !githubLogin) {
+        if (badge) badge.style.display = 'none';
+        cloudProgressLoadedLogin = null;
+        return;
+      }
+
+      const normalizedLogin = githubLogin.toLowerCase();
+      cloudProgressLoadedLogin = null;
+      cloudProgressSolvedCount = 0;
+      badge.style.display = 'inline-flex';
+      count.textContent = 'Завантаження…';
+
+      try {
+        const response = await fetch('https://loops-github-auth.ivan-grabovsky-ua.workers.dev/api/progress-matrix');
+        if (!response.ok) throw new Error(`Progress API returned ${response.status}`);
+
+        const data = await response.json();
+        const activeUser = getSavedGitHubUser();
+        if (activeUser?.login?.toLowerCase() !== normalizedLogin) return;
+
+        const student = Array.isArray(data.students)
+          ? data.students.find((item) => item?.githubLogin?.toLowerCase() === normalizedLogin)
+          : null;
+        const progress = student?.modules?.arrays;
+        const solved = Math.max(0, Number(progress?.solved) || 0);
+        const total = Math.max(1, Number(progress?.total) || ALL_TASKS.length);
+        const displayedSolved = Math.max(solved, completedTasks.size);
+        const percent = Math.min(100, Math.round((displayedSolved / total) * 100));
+
+        cloudProgressSolvedCount = solved;
+        cloudProgressLoadedLogin = normalizedLogin;
+        count.textContent = `${displayedSolved} / ${total} (${percent}%)`;
+
+        pendingCloudProgressSync = false;
+        syncStudentProgressToCloud('arrays');
+      } catch (err) {
+        count.textContent = 'недоступний';
+        console.warn('Could not load student cloud progress:', err);
+
+        const activeUser = getSavedGitHubUser();
+        if (activeUser?.login?.toLowerCase() === normalizedLogin) {
+          cloudProgressLoadedLogin = normalizedLogin;
+          cloudProgressSolvedCount = completedTasks.size;
+          pendingCloudProgressSync = false;
+          syncStudentProgressToCloud('arrays');
+        }
+      }
     }
 
     function renderGitHubUserUI() {
@@ -3346,8 +3412,13 @@ function checkMainDiagonal(board) {
         const docName = document.getElementById('certDocStudentName');
         if (docName) docName.textContent = certStudentName;
 
-        syncStudentProgressToCloud('arrays');
+        loadStudentCloudProgress(user);
       } else {
+        const cloudProgressBadge = document.getElementById('cloudProgressPill');
+        if (cloudProgressBadge) cloudProgressBadge.style.display = 'none';
+        cloudProgressLoadedLogin = null;
+        pendingCloudProgressSync = false;
+
         if (practiceOverlay) practiceOverlay.style.display = 'flex';
         if (codeEditorEl) codeEditorEl.readOnly = true;
         if (runBtnEl) {
@@ -3425,7 +3496,6 @@ function checkMainDiagonal(board) {
 
           renderGitHubUserUI();
           showToast(`✅ Успішно авторизовано як @${data.login}!`);
-          syncStudentProgressToCloud('arrays');
         } else {
           showToast('Помилка авторизації: ' + (data.error_description || data.error || 'не вдалося отримати профіль'));
         }
