@@ -1365,6 +1365,55 @@
       background: var(--card-bg);
       border-color: #334155;
     }
+
+    /* Keep the theory tab readable when the page uses the dark theme. */
+    [data-theme="dark"] .theory-section {
+      background: #111726 !important;
+      border-color: #334155 !important;
+      color: #e2e8f0 !important;
+      box-shadow: 3px 3px 0 #05070b !important;
+    }
+    [data-theme="dark"] .theory-title,
+    [data-theme="dark"] .theory-subtitle,
+    [data-theme="dark"] .theory-card-title {
+      color: #f8fafc !important;
+    }
+    [data-theme="dark"] .theory-subtitle {
+      border-bottom-color: #334155 !important;
+    }
+    [data-theme="dark"] .theory-p,
+    [data-theme="dark"] .theory-card p {
+      color: #cbd5e1 !important;
+    }
+    [data-theme="dark"] .theory-card {
+      background: #1a2232 !important;
+      border-color: #334155 !important;
+      color: #e2e8f0 !important;
+      box-shadow: 2px 2px 0 #080b11 !important;
+    }
+    [data-theme="dark"] .theory-card code,
+    [data-theme="dark"] .theory-p code {
+      background: #0e121a;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      color: #7dd3fc;
+      padding: 1px 5px;
+    }
+    [data-theme="dark"] .theory-diagram {
+      background: #182132 !important;
+      border-color: #475569 !important;
+      color: #cbd5e1 !important;
+    }
+    [data-theme="dark"] .theory-callout {
+      background: #172554 !important;
+      border-left-color: #60a5fa !important;
+      color: #dbeafe !important;
+    }
+    [data-theme="dark"] .theory-callout-warning {
+      background: #422006 !important;
+      border-left-color: #f59e0b !important;
+      color: #fde68a !important;
+    }
   
 </style>
 </head>
